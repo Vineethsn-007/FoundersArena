@@ -16,12 +16,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- First hero frame -->
+  <link rel="preload" as="image" href="frames/frame_0032.jpg" />
 
   <link rel="stylesheet" href="css/style.css" />
+  <noscript><style>#loader { display: none !important; }</style></noscript>
 </head>
-<body class="antialiased">
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Scroll progress hairline -->
   <div class="scroll-progress" aria-hidden="true"></div>
@@ -29,37 +32,49 @@
   <!-- Preloader -->
   <div id="loader" class="loader">
     <div class="loader__inner">
-      <div class="loader__track"><div id="loaderBar" class="loader__bar"></div></div>
-      <div id="loaderPct" class="loader__pct">0%</div>
+      <p class="loader__label">Loading the arena</p>
+      <div class="loader__track">
+        <div id="loaderBar" class="loader__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Loading the arena"></div>
+      </div>
+      <div id="loaderPct" class="loader__pct" aria-hidden="true">0%</div>
     </div>
   </div>
 
   <!-- Fixed header -->
   <header id="siteHeader" class="site-header">
-    <div class="site-header__brand">
-      <a href="#hero" data-scroll-to="#hero" aria-label="IEEE Systems, Man, and Cybernetics Society — home">
-        <span class="logo-plate logo-plate--sm"><img src="assets/smc-logo.jpeg" width="52" height="20" alt="IEEE Systems, Man, and Cybernetics Society logo" class="brand-logo" loading="lazy" decoding="async" /></span>
-      </a>
-      <a href="#hero" data-scroll-to="#hero" aria-label="ICSB — IoT, Cyber Security, Blockchain">
-        <span class="logo-plate logo-plate--sm"><img src="assets/icsb-logo.jpeg" width="84" height="20" alt="ICSB logo — IoT, Cyber Security, Blockchain" class="brand-logo" loading="lazy" decoding="async" /></span>
-      </a>
+    <div class="site-header__inner container">
+      <div class="site-header__brand">
+        <a class="brand-link" href="#hero" data-scroll-to="#hero" aria-label="IEEE Systems, Man, and Cybernetics Society — back to top">
+          <span class="logo-plate logo-plate--sm">
+            <img src="assets/smc-logo.jpeg" width="80" height="24" alt="IEEE Systems, Man, and Cybernetics Society logo" loading="lazy" decoding="async" />
+          </span>
+        </a>
+        <a class="brand-link" href="#hero" data-scroll-to="#hero" aria-label="ICSB — IoT, Cyber Security, Blockchain — back to top">
+          <span class="logo-plate logo-plate--sm">
+            <img src="assets/icsb-logo.jpeg" width="39" height="24" alt="ICSB logo - IoT, Cyber Security, Blockchain" loading="lazy" decoding="async" />
+          </span>
+        </a>
+      </div>
+
+      <nav class="site-header__nav" aria-label="Primary">
+        <a href="#about" data-scroll-to="#about">About</a>
+        <a href="#format" data-scroll-to="#format">Format</a>
+        <a href="#roles" data-scroll-to="#roles">Roles</a>
+        <a href="#schedule" data-scroll-to="#schedule">Schedule</a>
+        <a href="#judging" data-scroll-to="#judging">Judging</a>
+        <a href="#awards" data-scroll-to="#awards">Awards</a>
+        <a href="#contact" data-scroll-to="#contact">Contact</a>
+      </nav>
+
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span class="menu-btn__line"></span>
+        <span class="menu-btn__line"></span>
+      </button>
     </div>
-    <nav class="site-header__nav" aria-label="Primary">
-      <a href="#about" data-scroll-to="#about">About</a>
-      <a href="#format" data-scroll-to="#format">Format</a>
-      <a href="#roles" data-scroll-to="#roles">Roles</a>
-      <a href="#schedule" data-scroll-to="#schedule">Schedule</a>
-      <a href="#judging" data-scroll-to="#judging">Judging</a>
-      <a href="#awards" data-scroll-to="#awards">Awards</a>
-      <a href="#contact" data-scroll-to="#contact">Contact</a>
-    </nav>
-    <button id="menuBtn" class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-      <span></span><span></span>
-    </button>
   </header>
 
-  <!-- Mobile fullscreen menu -->
-  <div id="mobileMenu" class="mobile-menu" hidden>
+  <!-- Fullscreen menu -->
+  <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
     <nav aria-label="Mobile">
       <a href="#about" data-scroll-to="#about">About</a>
       <a href="#format" data-scroll-to="#format">Format</a>
@@ -71,54 +86,64 @@
     </nav>
   </div>
 
-  <main>
+  <main id="main" tabindex="-1">
     <!-- Hero: scroll-scrubbed frame sequence -->
-    <section id="hero" class="hero-section" style="height:500vh" aria-label="The Founder's Arena hero">
+    <section id="hero" class="hero-section" aria-labelledby="hero-title">
       <div class="hero-sticky">
-        <canvas id="frameCanvas" class="hero-canvas"></canvas>
+        <canvas id="frameCanvas" class="hero-canvas" aria-hidden="true"></canvas>
         <div class="hero__veil" aria-hidden="true"></div>
 
         <div class="hero__ui">
           <!-- 0–15% -->
           <div class="hero__group hero__group--intro" id="heroGroup1">
-            <p class="hero-eyebrow">IEEE SMC × ICSB PRESENT</p>
-            <h1 id="heroTitle" class="hero-title">THE FOUNDER&rsquo;S ARENA</h1>
-            <p class="hero-sub">Where Ideas Fight for Investment.</p>
-            <div class="hero-scroll" aria-hidden="true">
-              <span>Scroll</span>
-              <span class="hero-scroll__line"></span>
+            <div class="container">
+              <p class="hero-eyebrow" data-hero-fade>IEEE SMC × ICSB PRESENT</p>
+              <h1 id="hero-title" class="hero-title" data-split>THE FOUNDER&rsquo;S ARENA</h1>
+              <p class="hero-sub" data-hero-fade>Where Ideas Fight for Investment.</p>
+              <div class="hero-scroll" aria-hidden="true" data-hero-fade>
+                <span>Scroll</span>
+                <span class="hero-scroll__line"></span>
+              </div>
             </div>
           </div>
 
           <!-- 30–55% -->
           <div class="hero__group hero__group--mid" id="heroGroup2">
-            <p>Build Bold. Pitch Big. Become a Founder.</p>
+            <div class="container">
+              <p>Build Bold. Pitch Big. Become a Founder.</p>
+            </div>
           </div>
 
           <!-- 75–100% -->
           <div class="hero__group hero__group--chips" id="heroGroup3">
-            <ul class="hero-chips">
-              <li>2 &middot; 3 NOV 2026</li>
-              <li>SEMINAR HALL, PACE</li>
-              <li>9 AM &ndash; 4 PM</li>
-            </ul>
-            <a href="#about" class="hero-cta-link" data-scroll-to="#about">Explore the event ↓</a>
+            <div class="container">
+              <ul class="hero-chips">
+                <li>2 &middot; 3 NOV 2026</li>
+                <li>SEMINAR HALL, PACE</li>
+                <li>9 AM &ndash; 4 PM</li>
+              </ul>
+              <a href="#about" class="hero-cta-link" data-scroll-to="#about">Explore the event &darr;</a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- 01 — About -->
-    <section id="about" class="section bg-light">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>01 — The Event</p>
-        <h2 class="section-title split-target" style="max-width:20ch">Turn an idea into a product. A product into a brand. A brand into a business.</h2>
-        <div class="about-grid">
+    <section id="about" class="section section--light" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>01 &mdash; The Event</p>
+          <h2 id="about-title" class="section-title" data-split>Turn an idea into a product. A product into a brand. A brand into a business.</h2>
+        </div>
+
+        <div class="section-grid about-grid">
           <div class="about-copy">
             <p data-reveal>THE FOUNDER'S ARENA is a high-energy, two-day startup-building hackathon and Shark Tank-style pitching competition. Teams think like entrepreneurs, build like innovators, and pitch like founders.</p>
-            <p data-reveal>Twenty teams. One real-world problem each. A working product, a startup brand, a chart presentation, a promo reel — and a panel of judges acting as investors.</p>
+            <p data-reveal>Twenty teams. One real-world problem each. A working product, a startup brand, a chart presentation, a promo reel &mdash; and a panel of judges acting as investors.</p>
           </div>
-          <aside class="info-card card" data-reveal>
+
+          <aside class="info-card card" aria-label="Event details" data-reveal>
             <div class="info-row"><span class="info-label">Date</span><span class="info-value">November 2nd &amp; 3rd, 2026</span></div>
             <div class="info-row"><span class="info-label">Venue</span><span class="info-value">Seminar Hall, PACE</span></div>
             <div class="info-row"><span class="info-label">Timing</span><span class="info-value">9:00 AM to 4:00 PM</span></div>
@@ -129,28 +154,32 @@
     </section>
 
     <!-- 02 — Format -->
-    <section id="format" class="section bg-dark">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>02 — The Format</p>
-        <h2 class="section-title split-target" style="max-width:16ch">Two days. Twenty teams. One arena.</h2>
+    <section id="format" class="section section--dark" aria-labelledby="format-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>02 &mdash; The Format</p>
+          <h2 id="format-title" class="section-title" data-split>Two days. Twenty teams. One arena.</h2>
+        </div>
+
         <div class="stats-row" data-reveal-stagger>
           <div class="stat">
-            <p class="stat__num"><span data-count="20">0</span></p>
+            <p class="stat__num"><span data-count="20">20</span></p>
             <p class="stat__label">Teams</p>
           </div>
           <div class="stat">
-            <p class="stat__num"><span data-count="5">0</span></p>
+            <p class="stat__num"><span data-count="5">5</span></p>
             <p class="stat__label">Members per team</p>
           </div>
           <div class="stat">
-            <p class="stat__num"><span data-count="2">0</span></p>
+            <p class="stat__num"><span data-count="2">2</span></p>
             <p class="stat__label">Days</p>
           </div>
           <div class="stat">
-            <p class="stat__num"><span data-count="20">0</span></p>
+            <p class="stat__num"><span data-count="20">20</span></p>
             <p class="stat__label">Domain sheets</p>
           </div>
         </div>
+
         <div class="steps-grid" data-reveal-stagger>
           <article class="card step-card">
             <p class="step-card__no">1</p>
@@ -177,13 +206,16 @@
     </section>
 
     <!-- 03 — Roles -->
-    <section id="roles" class="section bg-light">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>03 — Your Team</p>
-        <h2 class="section-title split-target">Five founders. Five roles.</h2>
-        <p class="roles-sub" data-reveal>Every member must understand the whole product — judges may question anyone.</p>
-        <div class="roles-grid">
-          <article class="card role-card" data-reveal>
+    <section id="roles" class="section section--light" aria-labelledby="roles-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>03 &mdash; Your Team</p>
+          <h2 id="roles-title" class="section-title" data-split>Five founders. Five roles.</h2>
+          <p class="section-sub" data-reveal>Every member must understand the whole product &mdash; judges may question anyone.</p>
+        </div>
+
+        <div class="roles-grid" data-reveal-stagger>
+          <article class="card role-card">
             <p class="role-card__code">CEO</p>
             <h3 class="role-card__title">Chief Executive Officer</h3>
             <ul class="role-card__list">
@@ -192,7 +224,7 @@
               <li>Presents mission and long-term goals</li>
             </ul>
           </article>
-          <article class="card role-card" data-reveal>
+          <article class="card role-card">
             <p class="role-card__code">CTO</p>
             <h3 class="role-card__title">Chief Technology Officer</h3>
             <ul class="role-card__list">
@@ -201,7 +233,7 @@
               <li>Shows feasibility of the implementation</li>
             </ul>
           </article>
-          <article class="card role-card" data-reveal>
+          <article class="card role-card">
             <p class="role-card__code">CPO</p>
             <h3 class="role-card__title">Chief Product Officer</h3>
             <ul class="role-card__list">
@@ -210,7 +242,7 @@
               <li>Highlights the unique value</li>
             </ul>
           </article>
-          <article class="card role-card " data-reveal>
+          <article class="card role-card">
             <p class="role-card__code">CFO</p>
             <h3 class="role-card__title">Chief Financial Officer</h3>
             <ul class="role-card__list">
@@ -219,7 +251,7 @@
               <li>States the investment request and its use</li>
             </ul>
           </article>
-          <article class="card role-card role-card--last" data-reveal>
+          <article class="card role-card">
             <p class="role-card__code">CMO</p>
             <h3 class="role-card__title">Chief Marketing Officer</h3>
             <ul class="role-card__list">
@@ -233,164 +265,169 @@
     </section>
 
     <!-- 04 — Schedule -->
-    <section id="schedule" class="section bg-dark">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>04 — The Two Days</p>
-        <h2 class="section-title split-target">Build on Day 1. Pitch on Day 2.</h2>
+    <section id="schedule" class="section section--dark" aria-labelledby="schedule-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>04 &mdash; The Two Days</p>
+          <h2 id="schedule-title" class="section-title" data-split>Build on Day 1. Pitch on Day 2.</h2>
+        </div>
+
         <div class="schedule-grid">
-          <div class="schedule-col">
-            <h3 class="schedule-col__heading">Day 1 — Build Day · November 2</h3>
+          <div class="schedule-col" data-timeline>
+            <h3 class="schedule-col__heading">Day 1 &mdash; Build Day &middot; November 2</h3>
             <p class="schedule-col__sub">Transform an idea into a functional product and a startup brand.</p>
-            <ol class="timeline">
+            <div class="timeline">
               <span class="timeline__line" aria-hidden="true"></span>
+              <ol class="timeline__list">
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Develop the product</h4>
                   <p>Implement core features and prepare a working demo.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Create the brand</h4>
                   <p>Finalize a unique startup name, logo and visual identity.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Prepare the chart</h4>
                   <p>A physical chart paper presentation covering name, domain, problem, solution, features, audience, USP, business model and visuals.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Produce the reel</h4>
-                  <p>A 30–60 second promotional reel that tells your story.</p>
+                  <p>A 30&ndash;60 second promotional reel that tells your story.</p>
                 </div>
               </li>
             </ol>
-            <p class="schedule-note">Submit: working product · startup name and branding · promotional reel · physical chart. At least two members stay at the workstation at all times.</p>
+            </div>
+            <p class="schedule-note">Submit: working product &middot; startup name and branding &middot; promotional reel &middot; physical chart. At least two members stay at the workstation at all times.</p>
           </div>
-          <div class="schedule-col">
-            <h3 class="schedule-col__heading">Day 2 — The Investor Pitch · November 3</h3>
+
+          <div class="schedule-col" data-timeline>
+            <h3 class="schedule-col__heading">Day 2 &mdash; The Investor Pitch &middot; November 3</h3>
             <p class="schedule-col__sub">Convince the panel your startup deserves investment.</p>
-            <ol class="timeline">
+            <div class="timeline">
               <span class="timeline__line" aria-hidden="true"></span>
+              <ol class="timeline__list">
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Startup introduction</h4>
                   <p>Name, vision, team and roles.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Problem and solution</h4>
                   <p>Who it affects, why it matters, how you solve it.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Live product demo</h4>
                   <p>Show the working product and its key features.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Chart presentation</h4>
                   <p>Use your physical chart to reinforce the story.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Business and investment</h4>
                   <p>Revenue model, competitive edge, the ask, and future growth.</p>
                 </div>
               </li>
               <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"></span>
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Judges' Q&amp;A</h4>
                   <p>Defend your product, tech, finances and market.</p>
                 </div>
               </li>
             </ol>
+            </div>
           </div>
         </div>
-        <p class="schedule-hours" data-reveal>Event hours both days: 9:00 AM – 4:00 PM.</p>
+
+        <p class="schedule-hours" data-reveal>Event hours both days: 9:00 AM &ndash; 4:00 PM.</p>
       </div>
     </section>
 
     <!-- 05 — Judging -->
-    <section id="judging" class="section bg-light">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>05 — Judging</p>
-        <h2 class="section-title split-target">How you'll be evaluated.</h2>
+    <section id="judging" class="section section--light" aria-labelledby="judging-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>05 &mdash; Judging</p>
+          <h2 id="judging-title" class="section-title" data-split>How you'll be evaluated.</h2>
+        </div>
+
         <div class="judging-grid">
           <div class="judging-copy">
-            <p data-reveal>A panel of judges acts as investors and may allocate dummy investment money to promising startups. It simulates an investor's decision — it is not real funding.</p>
+            <p data-reveal>A panel of judges acts as investors and may allocate dummy investment money to promising startups. It simulates an investor's decision &mdash; it is not real funding.</p>
           </div>
+
           <div class="judging-list" data-reveal-stagger>
             <div class="judge-row">
               <span class="judge-row__no">1</span>
-              <div class="judge-row__text">
-                <h3 class="judge-row__name">Problem Identification &amp; Innovation</h3>
-                <p class="judge-row__desc">relevance, originality, impact</p>
-              </div>
+              <h3 class="judge-row__name">Problem Identification &amp; Innovation</h3>
+              <p class="judge-row__desc">relevance, originality, impact</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">2</span>
-              <div class="judge-row__text">
-                <h3 class="judge-row__name">Product Functionality &amp; Design</h3>
-                <p class="judge-row__desc">working core features, usability, execution</p>
-              </div>
+              <h3 class="judge-row__name">Product Functionality &amp; Design</h3>
+              <p class="judge-row__desc">working core features, usability, execution</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">3</span>
-              <div class="judge-row__text">
-                <h3 class="judge-row__name">Physical Chart &amp; Communication</h3>
-                <p class="judge-row__desc">clarity, visual appeal, business value</p>
-              </div>
+              <h3 class="judge-row__name">Physical Chart &amp; Communication</h3>
+              <p class="judge-row__desc">clarity, visual appeal, business value</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">4</span>
-              <div class="judge-row__text">
-                <h3 class="judge-row__name">Business Potential &amp; Scalability</h3>
-                <p class="judge-row__desc">model, market understanding, growth</p>
-              </div>
+              <h3 class="judge-row__name">Business Potential &amp; Scalability</h3>
+              <p class="judge-row__desc">model, market understanding, growth</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">5</span>
-              <div class="judge-row__text">
-                <h3 class="judge-row__name">Pitch Quality &amp; Teamwork</h3>
-                <p class="judge-row__desc">structure, confidence, coordination</p>
-              </div>
+              <h3 class="judge-row__name">Pitch Quality &amp; Teamwork</h3>
+              <p class="judge-row__desc">structure, confidence, coordination</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">6</span>
-              <div class="judge-row__text">
-                <h3 class="judge-row__name">Responses to Judges</h3>
-                <p class="judge-row__desc">product knowledge, reasoning, handling challenges</p>
-              </div>
+              <h3 class="judge-row__name">Responses to Judges</h3>
+              <p class="judge-row__desc">product knowledge, reasoning, handling challenges</p>
             </div>
           </div>
         </div>
+
         <p class="judging-footnote" data-reveal>Final scoring weightage will be announced by the organizing committee.</p>
       </div>
     </section>
 
     <!-- 06 — Awards -->
-    <section id="awards" class="section bg-dark">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>06 — Recognition</p>
-        <h2 class="section-title split-target">Only two places. Make them count.</h2>
+    <section id="awards" class="section section--dark" aria-labelledby="awards-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>06 &mdash; Recognition</p>
+          <h2 id="awards-title" class="section-title" data-split>Only two places. Make them count.</h2>
+        </div>
+
         <div class="awards-grid" data-reveal-stagger>
           <article class="card award-card">
             <p class="award-card__place">1st</p>
@@ -403,6 +440,7 @@
             <p class="award-card__text">The second-highest overall performance across all evaluation criteria.</p>
           </article>
         </div>
+
         <h3 class="gains-heading">What you'll gain</h3>
         <ul class="gains-list" data-reveal-stagger>
           <li>Build functional products under time pressure</li>
@@ -416,28 +454,37 @@
     </section>
 
     <!-- 07 — Contact -->
-    <section id="contact" class="section bg-light">
-      <div class="wrap">
-        <p class="eyebrow" data-reveal>07 — Join the Arena</p>
-        <h2 class="section-title split-target">Ready to become a founder?</h2>
-        <p class="contact-sub" data-reveal>For registration and queries, reach out to the organizer.</p>
+    <section id="contact" class="section section--light" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>07 &mdash; Join the Arena</p>
+          <h2 id="contact-title" class="section-title" data-split>Ready to become a founder?</h2>
+          <p class="section-sub" data-reveal>For registration and queries, reach out to the organizer.</p>
+        </div>
+
         <div class="contact-card card" data-reveal>
-          <div>
+          <div class="contact-card__who">
             <p class="contact-card__label">Organizer</p>
             <p class="contact-card__name">Muhammad Haashid</p>
             <p class="contact-card__phone">6360850145</p>
           </div>
           <div class="contact-card__actions">
             <a class="btn btn--primary" href="tel:+916360850145" aria-label="Call Muhammad Haashid on +91 63608 50145">Call now</a>
-            <a class="btn" href="https://wa.me/916360850145" target="_blank" rel="noopener" aria-label="Message Muhammad Haashid on WhatsApp">WhatsApp</a>
+            <a class="btn" href="https://wa.me/916360850145" target="_blank" rel="noopener" aria-label="Message Muhammad Haashid on WhatsApp (opens in a new tab)">WhatsApp</a>
           </div>
         </div>
-        <p class="venue-block" data-reveal>Seminar Hall, PACE · November 2nd &amp; 3rd · 9 AM – 4 PM</p>
+
+        <p class="venue-block" data-reveal>Seminar Hall, PACE &middot; November 2nd &amp; 3rd &middot; 9 AM &ndash; 4 PM</p>
+
         <div class="footer-presented" data-reveal>
           <p class="footer-presented__label">Presented by</p>
           <div class="footer-presented__logos">
-            <span class="logo-plate"><img src="assets/smc-logo.jpeg" width="104" height="32" alt="IEEE Systems, Man, and Cybernetics Society logo" loading="lazy" decoding="async" /></span>
-            <span class="logo-plate"><img src="assets/icsb-logo.jpeg" width="148" height="32" alt="ICSB logo — IoT, Cyber Security, Blockchain" loading="lazy" decoding="async" /></span>
+            <span class="logo-plate">
+              <img src="assets/smc-logo.jpeg" width="133" height="40" alt="IEEE Systems, Man, and Cybernetics Society logo" loading="lazy" decoding="async" />
+            </span>
+            <span class="logo-plate">
+              <img src="assets/icsb-logo.jpeg" width="64" height="40" alt="ICSB logo - IoT, Cyber Security, Blockchain" loading="lazy" decoding="async" />
+            </span>
           </div>
         </div>
       </div>
@@ -445,19 +492,29 @@
   </main>
 
   <footer class="site-footer">
-    <div class="footer__top">
-      <p class="footer__tagline">THE FOUNDER&rsquo;S ARENA — Where Ideas Fight for Investment.</p>
-      <div class="footer__logos">
-        <span class="logo-plate logo-plate--sm"><img src="assets/smc-logo.jpeg" width="52" height="20" alt="IEEE Systems, Man, and Cybernetics Society logo" loading="lazy" decoding="async" /></span>
-        <span class="logo-plate logo-plate--sm"><img src="assets/icsb-logo.jpeg" width="84" height="20" alt="ICSB logo — IoT, Cyber Security, Blockchain" loading="lazy" decoding="async" /></span>
+    <div class="container">
+      <div class="footer__top">
+        <p class="footer__tagline">THE FOUNDER&rsquo;S ARENA &mdash; Where Ideas Fight for Investment.</p>
+        <div class="footer__logos">
+          <span class="logo-plate logo-plate--sm">
+            <img src="assets/smc-logo.jpeg" width="80" height="24" alt="IEEE Systems, Man, and Cybernetics Society logo" loading="lazy" decoding="async" />
+          </span>
+          <span class="logo-plate logo-plate--sm">
+            <img src="assets/icsb-logo.jpeg" width="39" height="24" alt="ICSB logo - IoT, Cyber Security, Blockchain" loading="lazy" decoding="async" />
+          </span>
+        </div>
       </div>
-    </div>
-    <div class="footer__bottom">
-      <p class="footer__motto">Build Bold. Pitch Big. Become a Founder.</p>
-      <div class="footer__meta">
-        <p>© 2026 IEEE SMC × ICSB, PACE</p>
-        <button class="back-top" data-scroll-to-top>Back to top ↑</button>
+      <div class="footer__bottom">
+        <p class="footer__motto">Build Bold. Pitch Big. Become a Founder.</p>
+        <div class="footer__meta">
+          <p>© 2026 IEEE SMC × ICSB, PACE</p>
+          <button class="back-top" type="button" data-scroll-to-top>Back to top ↑</button>
+        </div>
       </div>
+      <p class="footer__credit">
+        Made with <span class="footer__heart" aria-hidden="true">&hearts;</span><span class="visually-hidden">love</span> by
+        <a href="https://www.linkedin.com/in/vineethsn/" target="_blank" rel="noopener noreferrer" aria-label="Vineeth S N on LinkedIn (opens in a new tab)">Vineeth S N</a>
+      </p>
     </div>
   </footer>
 

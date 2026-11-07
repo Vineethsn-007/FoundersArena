@@ -1,653 +1,581 @@
 /* ============================================================
-   THE FOUNDER'S ARENA — js/main.js
-   Phase 1 (scaffold): Lenis + GSAP wiring, header state,
-   scroll progress hairline, anchor scrolling.
+   THE FOUNDER'S ARENA - js/main.js
+   config > Lenis > frames/hero > reveal helpers > sections > resize
    ============================================================ */
+(() => {
+  'use strict';
 
-/* ---------------- Shared helpers ---------------- */
-const prefersReducedMotion =
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ================= CONFIG ================= */
+  const CONFIG = {
+    frameStart: 32,
+    frameEnd: 240,
+    maxConcurrent: 8,
+    headerOffset: 72,
+    scrollDuration: 1.2,
+    midFrame: 104,
+  };
+  const FRAME_COUNT = CONFIG.frameEnd - CONFIG.frameStart + 1;
 
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
-const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
+  const hasGSAP = !!(gsap && ScrollTrigger);
+  if (hasGSAP) gsap.registerPlugin(ScrollTrigger);
 
-const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-/* smoothstep inside a progress window a..b (returns 0..1) */
-const window01 = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReduced = reducedQuery.matches;
 
-/* ---------------- Lenis + ScrollTrigger wiring ---------------- */
-let lenis = null;
-let scrollToTarget = (target, opts = {}) => {
-  const el = typeof target === 'string' ? $(target) : target;
-  if (!el) return;
-  if (lenis) {
-    lenis.scrollTo(el, { offset: -72, ...opts });
-  } else {
-    const top =
-      el.getBoundingClientRect().top + window.scrollY - 72;
-    window.scrollTo({
-      top,
-      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+  const window01 = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+
+  /* ================= STATE ================= */
+  const dom = {
+    header: $('#siteHeader'),
+    menu: $('#mobileMenu'),
+    menuBtn: $('#menuBtn'),
+    progress: $('.scroll-progress'),
+    loader: $('#loader'),
+    loaderBar: $('#loaderBar'),
+    loaderPct: $('#loaderPct'),
+    canvas: $('#frameCanvas'),
+    hero: $('#hero'),
+    heroGroup1: $('#heroGroup1'),
+    heroGroup2: $('#heroGroup2'),
+    heroGroup3: $('#heroGroup3'),
+  };
+  const frames = new Array(FRAME_COUNT);
+  let frameLoaded = 0;
+  let frameFailed = 0;
+  let lastDrawn = -1;
+  let drawScheduled = false;
+  let pendingDraw = -1;
+  let loaderHidden = false;
+  let loadSafety = null;
+  let lenis = null;
+  let menuOpen = false;
+  let lastFocused = null;
+  let heroIntroPlayed = false;
+  let resizeTimer = null;
+  let ctx = null;
+  let canvasW = 0;
+  let canvasH = 0;
+
+  /* ================= LENIS ================= */
+  function initLenis() {
+    if (prefersReduced || typeof window.Lenis === 'undefined' || !hasGSAP) return;
+    lenis = new window.Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.4,
     });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    lenis.stop();
   }
-};
 
-if (!prefersReducedMotion) {
-  lenis = new Lenis({
-    duration: 1.1,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((t) => lenis.raf(t * 1000));
-  gsap.ticker.lagSmoothing(0);
-  lenis.stop(); // stopped until the preloader is hidden
-  gsap.registerPlugin(ScrollTrigger);
-} else {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-/* ---------------- Anchor scrolling ---------------- */
-$$('[data-scroll-to]').forEach((link) => {
-  link.addEventListener('click', (e) => {
-    const target = link.getAttribute('data-scroll-to');
+  function scrollToTarget(target) {
     if (!target) return;
-    e.preventDefault();
-    if (target === '#hero' && link.closest('a[href="#hero"]')) {
-      // header brand links go to very top
-      if (lenis) lenis.scrollTo(0);
-      else window.scrollTo({ top: 0 });
+    if (target === '#hero' || target === '#top') {
+      if (lenis) lenis.scrollTo(0, { duration: CONFIG.scrollDuration });
+      else window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
       return;
     }
-    scrollToTarget(target);
-    closeMobileMenu();
-  });
-});
-const backTop = $('[data-scroll-to-top]');
-if (backTop) {
-  backTop.addEventListener('click', () => {
-    if (lenis) lenis.scrollTo(0);
-    else window.scrollTo({ top: 0 });
-  });
-}
-
-/* ---------------- Header state + progress hairline ---------------- */
-const header = $('#siteHeader');
-const progressBar = $('.scroll-progress');
-
-function onScrollState() {
-  const y = window.scrollY;
-  header.classList.toggle('is-scrolled', y > 80);
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  if (progressBar) {
-    progressBar.style.transform = `scaleX(${max > 0 ? clamp(y / max, 0, 1) : 0})`;
-  }
-}
-window.addEventListener('scroll', onScrollState, { passive: true });
-onScrollState();
-
-/* ---------------- Mobile menu ---------------- */
-const menuBtn = $('#menuBtn');
-const mobileMenu = $('#mobileMenu');
-let menuOpen = false;
-
-function openMobileMenu() {
-  menuOpen = true;
-  mobileMenu.hidden = false;
-  menuBtn.setAttribute('aria-expanded', 'true');
-  menuBtn.setAttribute('aria-label', 'Close menu');
-  gsap.fromTo(
-    '#mobileMenu',
-    { opacity: 0 },
-    { opacity: 1, duration: 0.35, ease: 'power2.out' }
-  );
-}
-function closeMobileMenu(instant = false) {
-  if (!menuOpen) return;
-  menuOpen = false;
-  menuBtn.setAttribute('aria-expanded', 'false');
-  menuBtn.setAttribute('aria-label', 'Open menu');
-  const close = () => {
-    mobileMenu.hidden = true;
-  };
-  if (instant) return close();
-  gsap.to('#mobileMenu', {
-    opacity: 0,
-    duration: 0.25,
-    ease: 'power2.in',
-    onComplete: close,
-  });
-}
-menuBtn.addEventListener('click', () => {
-  menuOpen ? closeMobileMenu() : openMobileMenu();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeMobileMenu();
-});
-
-/* ============================================================
-   PHASE 2 — Hero frame sequence (canvas renderer, preloader,
-   scroll scrub, overlay copy control)
-   ============================================================ */
-
-/* FRAME_COUNT is verified automatically at runtime by probing
-   /frames with HEAD requests (exponential + binary search).
-   This fallback matches the current /frames folder contents
-   (frame_0001.jpg … frame_0240.jpg) and is used when probing is
-   not possible (e.g. opened via file://). If you add or remove
-   frames, update this number — or keep it in sync so it is
-   correct even offline. */
-const FRAME_COUNT_FALLBACK = 240;
-let FRAME_COUNT = FRAME_COUNT_FALLBACK;
-let framesAvailable = true; // false => solid-colour fallback canvas
-
-const pad4 = (n) => String(n).padStart(4, '0');
-const frameURL = (i) => `frames/frame_${pad4(i + 1)}.jpg`;
-
-async function probeFrame(i) {
-  try {
-    const res = await fetch(frameURL(i), { method: 'HEAD' });
-    return res.ok;
-  } catch {
-    return null; // probing unavailable
-  }
-}
-
-async function detectFrameCount() {
-  try {
-    const first = await probeFrame(0);
-    if (first === null) return -1; // cannot probe offline
-    if (first === false) return 0; // /frames is empty
-    let lo = 0,
-      hi = 1;
-    while (await probeFrame(hi)) {
-      lo = hi;
-      hi *= 2;
-      if (hi > 4000) break;
+    const el = $(target);
+    if (!el) return;
+    if (lenis) {
+      lenis.scrollTo(el, { offset: -CONFIG.headerOffset, duration: CONFIG.scrollDuration });
+    } else {
+      const top = el.getBoundingClientRect().top + window.scrollY - CONFIG.headerOffset;
+      window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
     }
-    while (hi - lo > 1) {
-      const mid = (lo + hi) >> 1;
-      if (await probeFrame(mid)) lo = mid;
-      else hi = mid;
-    }
-    return lo + 1; // highest probe hit is index lo (0-based)
-  } catch {
-    return -1;
   }
-}
 
-/* ---------------- Canvas renderer ---------------- */
-const canvas = $('#frameCanvas');
-const ctx = canvas ? canvas.getContext('2d') : null;
-let cw = 0,
-  ch = 0,
-  dpr = 1;
+  /* ================= CANVAS / FRAME LOADER ================= */
+  function frameSrc(i) {
+    return `frames/frame_${String(CONFIG.frameStart + i).padStart(4, '0')}.jpg`;
+  }
 
-let imgMap = new Map(); // index -> Image (loaded only)
-let STRIDE = window.innerWidth < 768 ? 2 : 1; // mobile: every 2nd frame
-let lastDrawn = -2; // force first draw
-let requestedFrame = 0;
+  function setupCanvas() {
+    if (!dom.canvas) return;
+    const rect = dom.canvas.getBoundingClientRect();
+    canvasW = Math.max(1, Math.round(rect.width));
+    canvasH = Math.max(1, Math.round(rect.height));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dom.canvas.width = Math.round(canvasW * dpr);
+    dom.canvas.height = Math.round(canvasH * dpr);
+    ctx = dom.canvas.getContext('2d');
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
 
-function drawFill() {
-  // solid-colour fallback when no frames exist
-  ctx.fillStyle = '#0b0d10';
-  ctx.fillRect(0, 0, cw, ch);
-}
+  function frameReady(i) {
+    const img = frames[i];
+    return !!(img && img.complete && img.naturalWidth > 0);
+  }
 
-function drawCover(img) {
-  const iw = img.naturalWidth,
-    ih = img.naturalHeight;
-  const scale = Math.max(cw / iw, ch / ih); // "cover" fit, centre-crop
-  const w = iw * scale,
-    h = ih * scale;
-  ctx.fillStyle = '#0b0d10';
-  ctx.fillRect(0, 0, cw, ch);
-  ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
-}
-
-function snapToLoaded(i) {
-  if (imgMap.has(i)) return i;
-  let j = i - (i % STRIDE); // stay on the stride grid
-  while (j >= 0 && !imgMap.has(j)) j -= STRIDE;
-  return j; // -1 => nothing loaded yet
-}
-
-function drawFrame(i, force = false) {
-  if (!ctx) return;
-  const j = snapToLoaded(i);
-  if (!force && j === lastDrawn) return;
-  lastDrawn = j;
-  if (j < 0 || !framesAvailable) drawFill();
-  else drawCover(imgMap.get(j));
-}
-
-function sizeCanvas() {
-  if (!canvas) return;
-  dpr = Math.min(window.devicePixelRatio || 1, 2);
-  cw = canvas.clientWidth || canvas.parentElement.clientWidth;
-  ch = canvas.clientHeight || canvas.parentElement.clientHeight;
-  canvas.width = Math.round(cw * dpr);
-  canvas.height = Math.round(ch * dpr);
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  drawFrame(requestedFrame, true); // repaint, no jump/flicker on resize
-}
-
-/* Draw inside rAF, and only when the index actually changed */
-let pendingFrame = null,
-  rafScheduled = false;
-function scheduleDraw(i) {
-  requestedFrame = i;
-  if (pendingFrame === i) return;
-  pendingFrame = i;
-  if (rafScheduled) return;
-  rafScheduled = true;
-  requestAnimationFrame(() => {
-    rafScheduled = false;
-    if (pendingFrame !== null) {
-      drawFrame(pendingFrame);
-      pendingFrame = null;
+  function nearestFrame(index) {
+    if (frameReady(index)) return frames[index];
+    for (let d = 1; d < FRAME_COUNT; d += 1) {
+      if (index - d >= 0 && frameReady(index - d)) return frames[index - d];
+      if (index + d < FRAME_COUNT && frameReady(index + d)) return frames[index + d];
     }
-  });
-}
+    return null;
+  }
 
-/* ---------------- Preloader + image loading ---------------- */
-const loader = $('#loader');
-const loaderBar = $('#loaderBar');
-const loaderPct = $('#loaderPct');
-let loaderHidden = false;
-let loaderDone = false; // resolves once ≥ 95% loaded
+  function drawFrame(index) {
+    if (!ctx || !canvasW || !canvasH) return;
+    const img = nearestFrame(clamp(index, 0, FRAME_COUNT - 1));
+    if (!img) return;
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+    if (!iw || !ih) return;
+    const scale = Math.max(canvasW / iw, canvasH / ih);
+    const dw = iw * scale;
+    const dh = ih * scale;
+    ctx.clearRect(0, 0, canvasW, canvasH);
+    ctx.drawImage(img, (canvasW - dw) / 2, (canvasH - dh) / 2, dw, dh);
+    lastDrawn = index;
+  }
 
-function setLoaderProgress(ratio) {
-  const pct = Math.round(ratio * 100);
-  if (loaderBar) loaderBar.style.transform = `scaleX(${clamp(ratio, 0, 1)})`;
-  if (loaderPct) loaderPct.textContent = `${pct}%`;
-}
-
-function hideLoader() {
-  if (loaderHidden) return;
-  loaderHidden = true;
-  if (loader) {
-    loader.classList.add('is-hidden');
-    gsap.to(loader, {
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power2.out',
-      onComplete: () => loader.remove(),
+  function scheduleDraw(index) {
+    pendingDraw = index;
+    if (drawScheduled) return;
+    drawScheduled = true;
+    requestAnimationFrame(() => {
+      drawScheduled = false;
+      drawFrame(pendingDraw);
     });
   }
-  if (lenis) lenis.start(); // release scrolling only now
-  playHeroIntro();
-  ScrollTrigger.refresh();
-}
 
-function loadHeroFrames() {
-  if (!framesAvailable || FRAME_COUNT < 2) {
-    // Empty /frames: build the page on a solid-colour canvas.
-    setLoaderProgress(1);
-    hideLoader();
-    drawFill();
-    return;
+  function updateProgress() {
+    const pct = Math.min(100, (frameLoaded / FRAME_COUNT) * 100);
+    if (dom.loaderBar) {
+      dom.loaderBar.style.transform = `scaleX(${pct / 100})`;
+      dom.loaderBar.setAttribute('aria-valuenow', String(Math.round(pct)));
+    }
+    if (dom.loaderPct) dom.loaderPct.textContent = `${Math.round(pct)}%`;
+    if (pct >= 95) finishLoading();
   }
 
-  const indices = [];
-  for (let i = 0; i < FRAME_COUNT; i += STRIDE) indices.push(i);
-  const total = indices.length;
-  let settled = 0,
-    next = 0,
-    released = false;
-
-  const settle = (idx, img, ok) => {
-    settled++;
-    if (ok && img) imgMap.set(idx, img);
-    const ratio = settled / total;
-    setLoaderProgress(ratio);
-    if (!released && ratio >= 0.95) {
-      released = true;
-      loaderDone = true;
-      hideLoader(); // don't block the page on the last few frames
-    }
-  };
-
-  /* 8-concurrent loader pool, frames in order */
-  const CONCURRENCY = 8;
-  let launched = 0;
-
-  const launch = () => {
-    while (launched < total && next - settled < CONCURRENCY) {
-      const idx = indices[next++];
+  function loadFrame(i) {
+    return new Promise((resolve) => {
       const img = new Image();
       img.decoding = 'async';
-      img.onload = () => settle(idx, img, true);
-      img.onerror = () => settle(idx, null, false);
-      img.src = frameURL(idx);
-      launched = next; // every cursor slot = one in-flight request
+      img.onload = () => {
+        frameLoaded += 1;
+        updateProgress();
+        resolve(img);
+      };
+      img.onerror = () => {
+        frameFailed += 1;
+        frameLoaded += 1;
+        updateProgress();
+        resolve(null);
+      };
+      img.src = frameSrc(i);
+      frames[i] = img;
+    });
+  }
+
+  function initFrames() {
+    setupCanvas();
+    if (!dom.canvas || !ctx) {
+      finishLoading();
+      return;
     }
-  };
-
-  const pump = setInterval(() => {
-    if (next >= total) return clearInterval(pump);
-    launch();
-  }, 16);
-  launch(); // start filling the pool immediately
-
-  // Load frame 1 first and draw it immediately (no blank canvas).
-  const first = new Image();
-  first.decoding = 'async';
-  first.onload = () => {
-    imgMap.set(0, first);
-    sizeCanvas();
-    drawFrame(0, true);
-  };
-  first.onerror = () => {
-    framesAvailable = false;
-    setLoaderProgress(1);
-    hideLoader();
-    drawFill();
-  };
-  first.src = frameURL(0);
-
-  // Wait for the very first frame before pumping the pool so the
-  // preloader percentage starts meaningfully with frame 1 in place.
-  const startWhenReady = () => {
-    const t = setTimeout(startWhenReady, 30);
-    if (imgMap.has(0) || !framesAvailable) {
-      clearTimeout(t);
+    loadSafety = window.setTimeout(finishLoading, 20000);
+    const first = loadFrame(0).then((img) => {
+      if (img) scheduleDraw(0);
+    });
+    let next = 1;
+    const workers = [];
+    const workerCount = Math.max(1, CONFIG.maxConcurrent - 1);
+    for (let w = 0; w < workerCount; w += 1) {
+      workers.push((async () => {
+        while (next < FRAME_COUNT) {
+          const i = next;
+          next += 1;
+          await loadFrame(i);
+          if (prefersReduced && i === CONFIG.midFrame) scheduleDraw(i);
+        }
+      })());
     }
-  };
-  startWhenReady();
-}
-
-/* ---------------- Hero scroll scrub ---------------- */
-const heroSection = $('#hero');
-const heroGroup1 = $('#heroGroup1');
-const heroGroup2 = $('#heroGroup2');
-const heroGroup3 = $('#heroGroup3');
-const heroScrollIndicator = $('.hero-scroll');
-
-function updateHeroOverlays(p) {
-  if (!heroGroup1) return;
-  // Group 1 (intro): visible at load, gone by 15%
-  const g1 = 1 - window01(p, 0.08, 0.15);
-  // Scroll indicator fades by 10%
-  const ind = 1 - window01(p, 0.05, 0.1);
-  // Group 2 (mid line): in 30–38%, out 48–55%
-  const g2in = window01(p, 0.3, 0.38);
-  const g2out = window01(p, 0.48, 0.55);
-  const g2 = g2in * (1 - g2out);
-  // Group 3 (chips): in 75–85%, holds to the end
-  const g3 = window01(p, 0.75, 0.85);
-
-  gsap.set(heroGroup1, { opacity: g1, y: 18 * (1 - g1) });
-  if (heroScrollIndicator)
-    gsap.set(heroScrollIndicator, { opacity: ind });
-  if (heroGroup2) gsap.set(heroGroup2, {
-    opacity: g2,
-    y: 20 * (1 - g2),
-  });
-  if (heroGroup3) gsap.set(heroGroup3, {
-    opacity: g3,
-    y: 20 * (1 - g3),
-  });
-}
-
-function initHeroScrub() {
-  if (!framesAvailable || FRAME_COUNT < 2) return;
-
-  if (prefersReducedMotion) {
-    // Static middle frame, no scrubbing, no overlay animation.
-    drawHeroStaticFrame();
-    return;
+    Promise.all([first, ...workers]).then(() => {
+      if (lastDrawn < 0) scheduleDraw(prefersReduced ? CONFIG.midFrame : 0);
+    });
   }
 
-  const frameState = { frame: 0 };
-  gsap.to(frameState, {
-    frame: FRAME_COUNT - 1,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#hero',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.6,
-      invalidateOnRefresh: true,
-    },
-    onUpdate() {
-      const i = Math.round(clamp(frameState.frame, 0, FRAME_COUNT - 1));
-      scheduleDraw(i);
-    },
-  });
-
-  ScrollTrigger.create({
-    trigger: '#hero',
-    start: 'top top',
-    end: 'bottom bottom',
-    onUpdate(self) {
-      updateHeroOverlays(self.progress);
-    },
-  });
-  updateHeroOverlays(0);
-}
-
-function drawHeroStaticFrame() {
-  // prefers-reduced-motion: one static frame — the middle one.
-  overlayStaticHeroCopy();
-  if (!framesAvailable || FRAME_COUNT < 2) {
-    drawFill();
-    return;
-  }
-  const mid = Math.floor((FRAME_COUNT - 1) / 2);
-  const img = new Image();
-  img.decoding = 'async';
-  img.onload = () => {
-    imgMap.set(mid, img);
-    sizeCanvas();
-    drawFrame(mid, true);
-  };
-  img.onerror = () => drawFill();
-  img.src = frameURL(mid);
-}
-
-/* Reduced motion: show hero copy statically, no reveal animation. */
-function overlayStaticHeroCopy() {
-  if (heroGroup1) {
-    gsap.set(heroGroup1, { opacity: 1, y: 0 });
-    const inner = heroGroup1.querySelectorAll('.w > i');
-    inner.forEach((el) => gsap.set(el, { yPercent: 0 }));
-  }
-  if (heroScrollIndicator) gsap.set(heroScrollIndicator, { opacity: 1 });
-  if (heroGroup2) gsap.set(heroGroup2, { opacity: 0 });
-  if (heroGroup3) gsap.set(heroGroup3, { opacity: 0 });
-}
-
-/* ---------------- Hero title split + intro reveal ---------------- */
-function splitWords(el) {
-  if (!el || el.dataset.split === 'done') return;
-  const words = el.textContent.trim().split(/\s+/);
-  el.textContent = '';
-  el.classList.add('split');
-  el.setAttribute('aria-label', words.join(' '));
-  words.forEach((word, idx) => {
-    const w = document.createElement('span');
-    w.className = 'w';
-    const i = document.createElement('i');
-    i.textContent = word;
-    w.appendChild(i);
-    el.appendChild(w);
-    if (idx < words.length - 1) el.appendChild(document.createTextNode(' '));
-  });
-  el.dataset.split = 'done';
-}
-
-function playHeroIntro() {
-  if (prefersReducedMotion) return;
-  const items = $$('#heroTitle .w > i');
-  gsap.fromTo(
-    items,
-    { yPercent: 110 },
-    { yPercent: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06 }
-  );
-  gsap.fromTo(
-    ['.hero-eyebrow', '.hero-sub', '.hero-scroll'],
-    { opacity: 0, y: 14 },
-    { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08, delay: 0.15 }
-  );
-}
-
-/* ---------------- Resize ---------------- */
-let resizeTimer = null;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    sizeCanvas();
-    ScrollTrigger.refresh();
-  }, 120);
-});
-
-/* ---------------- Boot ---------------- */
-function prepHero() {
-  splitWords($('#heroTitle'));
-  sizeCanvas();
-  if (prefersReducedMotion) {
-    if (loader) loader.remove();
-    drawHeroStaticFrame(); // shows the single middle frame, no scrub
-    ScrollTrigger.refresh();
-    return;
-  }
-  if (lenis) lenis.stop();
-  (async () => {
-    const detected = await detectFrameCount();
-    if (detected === 0) {
-      framesAvailable = false; // /frames empty → solid fallback canvas
-    } else if (detected > 0) {
-      FRAME_COUNT = detected;
-    } else {
-      FRAME_COUNT = FRAME_COUNT_FALLBACK; // offline probe → known count
+  function finishLoading() {
+    if (loaderHidden) return;
+    loaderHidden = true;
+    window.clearTimeout(loadSafety);
+    if (prefersReduced) {
+      drawFrame(CONFIG.midFrame);
+    } else if (lastDrawn < 0) {
+      drawFrame(0);
     }
-    loadHeroFrames();
-    initHeroScrub();
-  })();
-}
-
-prepHero();
-
-/* Refresh ScrollTrigger once fonts are settled too. */
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => ScrollTrigger.refresh());
-}
-
-/* ============================================================
-   PHASE 4 — Content animations (split-text, fade-up, count-up,
-   timeline draw). Reveals play once, 0.6–0.9s, power3/expo out,
-   start at "top 85%". Nothing else animates.
-   ============================================================ */
-
-function initContentAnimations() {
-  if (prefersReducedMotion) {
-    // Show everything at final state; no reveal animations at all.
-    $$('.split-target').forEach(splitWords);
-    $$('[data-count]').forEach((el) => (el.textContent = el.dataset.count));
-    $$('.timeline__dot').forEach((d) => d.classList.add('is-filled'));
-    return;
+    if (dom.loader) {
+      dom.loader.classList.add('is-hidden');
+      dom.loader.setAttribute('aria-hidden', 'true');
+    }
+    if (lenis) lenis.start();
+    if (hasGSAP) ScrollTrigger.refresh();
+    runHeroIntro();
   }
 
-  /* ---- 1. Split-text headings: words rise from below, once ---- */
-  $$('.split-target').forEach((heading) => {
-    splitWords(heading);
-    heading.classList.add('split');
-    const words = $$('.w > i', heading);
-    if (!words.length) return;
-    gsap.set(words, { yPercent: 110 });
-    gsap.to(words, {
-      yPercent: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.06,
+  /* ================= HERO SCRUB ================= */
+  let heroUpdate = null;
+
+  function initHeroScrub() {
+    if (!hasGSAP || prefersReduced || !dom.hero || !dom.heroGroup1) return;
+    const groups = [dom.heroGroup1, dom.heroGroup2, dom.heroGroup3];
+    gsap.set([dom.heroGroup2, dom.heroGroup3], { autoAlpha: 0 });
+
+    const update = (p) => {
+      let index = Math.round(p * (FRAME_COUNT - 1));
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        index = Math.round(index / 2) * 2;
+      }
+      index = clamp(index, 0, FRAME_COUNT - 1);
+      if (index !== pendingDraw) scheduleDraw(index);
+
+      const out1 = window01(p, 0.10, 0.22);
+      const in2 = window01(p, 0.32, 0.42);
+      const out2 = window01(p, 0.54, 0.64);
+      const in3 = window01(p, 0.72, 0.82);
+
+      gsap.set(groups[0], { autoAlpha: 1 - out1, y: -16 * out1 });
+      gsap.set(groups[1], { autoAlpha: in2 * (1 - out2), y: 16 * (1 - in2) });
+      gsap.set(groups[2], { autoAlpha: in3, y: 16 * (1 - in3) });
+    };
+    heroUpdate = update;
+
+    const proxy = { p: 0 };
+    gsap.to(proxy, {
+      p: 1,
+      ease: 'none',
+      onUpdate: () => update(proxy.p),
       scrollTrigger: {
-        trigger: heading,
-        start: 'top 85%',
-        once: true,
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+        onRefresh: (self) => update(self.progress),
       },
     });
-  });
+  }
 
-  /* ---- 2. Fade-up blocks (optionally staggered groups) ---- */
-  $$('[data-reveal-stagger]').forEach((group) => {
-    const children = Array.from(group.children);
-    gsap.set(children, { opacity: 0, y: 24 });
-    gsap.to(children, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.08,
-      scrollTrigger: {
-        trigger: group,
-        start: 'top 85%',
-        once: true,
-      },
+  function splitWords(el) {
+    const text = el.textContent.replace(/\s+/g, ' ').trim();
+    el.textContent = '';
+    const frag = document.createDocumentFragment();
+    const words = text.split(' ');
+    words.forEach((word, i) => {
+      const wrap = document.createElement('span');
+      wrap.className = 'w';
+      const inner = document.createElement('i');
+      inner.textContent = word;
+      wrap.appendChild(inner);
+      frag.appendChild(wrap);
+      if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
     });
-  });
+    el.appendChild(frag);
+    return $$('.w > i', el);
+  }
 
-  $$('[data-reveal]:not([data-reveal-stagger] > *)').forEach((el) => {
-    // skip plain reveals that live inside a stagger group (those are covered)
-    if (el.closest('[data-reveal-stagger]')) return;
-    gsap.set(el, { opacity: 0, y: 24 });
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        once: true,
-      },
+  function initHeroIntro() {
+    if (!hasGSAP || prefersReduced) return;
+    const title = $('.hero-title');
+    if (title) splitWords(title);
+    const words = $$('.hero-title .w > i');
+    if (words.length) gsap.set(words, { yPercent: 110 });
+    const fades = $$('[data-hero-fade]');
+    if (fades.length) gsap.set(fades, { autoAlpha: 0, y: 16 });
+  }
+
+  function runHeroIntro() {
+    if (!hasGSAP || prefersReduced || heroIntroPlayed) return;
+    heroIntroPlayed = true;
+    const words = $$('.hero-title .w > i');
+    const fades = $$('[data-hero-fade]');
+    const tl = gsap.timeline({ delay: 0.08 });
+    if (words.length) {
+      gsap.set(words, { willChange: 'transform' });
+      tl.to(words, {
+        yPercent: 0,
+        duration: 0.85,
+        ease: 'expo.out',
+        stagger: 0.06,
+        onComplete: () => gsap.set(words, { willChange: 'auto' }),
+      });
+    }
+    if (fades.length) {
+      tl.to(fades, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        stagger: 0.07,
+      }, '-=0.55');
+    }
+  }
+
+  /* ================= REVEALS / COUNTS / TIMELINES ================= */
+  function initReveals() {
+    if (!hasGSAP || prefersReduced) return;
+
+    $$('[data-split]').forEach((el) => {
+      if (el.closest('#hero')) return;
+      const words = splitWords(el);
+      if (!words.length) return;
+      gsap.set(words, { yPercent: 110 });
+      gsap.to(words, {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'expo.out',
+        stagger: 0.06,
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        onStart: () => gsap.set(words, { willChange: 'transform' }),
+        onComplete: () => gsap.set(words, { willChange: 'auto' }),
+      });
     });
-  });
 
-  /* ---- 3. One count-up on the stats row ---- */
-  $$('[data-count]').forEach((el) => {
-    const target = parseInt(el.dataset.count, 10) || 0;
-    const obj = { v: 0 };
-    gsap.to(obj, {
-      v: target,
-      duration: 1.2,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        once: true,
-      },
-      onUpdate() {
-        el.textContent = String(Math.round(obj.v));
-      },
+    $$('[data-reveal]').forEach((el) => {
+      const y = el.classList.contains('eyebrow') ? 12 : 24;
+      gsap.fromTo(el, { autoAlpha: 0, y }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      });
     });
-  });
 
-  /* ---- 4. Timeline lines draw with scroll; dots fill as reached ---- */
-  $$('.schedule-col').forEach((col) => {
-    const line = $('.timeline__line', col);
-    const dots = $$('.timeline__dot', col);
-    if (!line || !dots.length) return;
-    gsap.set(line, { scaleY: 0 });
+    $$('[data-reveal-stagger]').forEach((group) => {
+      const children = Array.from(group.children);
+      if (!children.length) return;
+      gsap.fromTo(children, { autoAlpha: 0, y: 24 }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        stagger: 0.08,
+        scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+      });
+    });
+  }
+
+  function initCounts() {
+    $$('[data-count]').forEach((el) => {
+      const end = parseInt(el.getAttribute('data-count'), 10);
+      if (Number.isNaN(end)) return;
+      if (!hasGSAP || prefersReduced) {
+        el.textContent = String(end);
+        return;
+      }
+      el.textContent = '0';
+      const obj = { v: 0 };
+      gsap.to(obj, {
+        v: end,
+        duration: 1.2,
+        ease: 'power2.out',
+        snap: { v: 1 },
+        onUpdate: () => { el.textContent = String(Math.round(obj.v)); },
+        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+      });
+    });
+  }
+
+  function initTimelines() {
+    $$('[data-timeline]').forEach((col) => {
+      const timeline = $('.timeline', col);
+      if (!timeline) return;
+      const line = $('.timeline__line', timeline);
+      const dots = $$('.timeline__dot i', timeline);
+      if (!hasGSAP || prefersReduced) {
+        if (hasGSAP) gsap.set(dots, { scale: 1 });
+        return;
+      }
+      if (line) {
+        gsap.set(line, { scaleY: 0, transformOrigin: 'top center' });
+      }
+      gsap.set(dots, { scale: 0 });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: timeline,
+          start: 'top 78%',
+          end: 'bottom 62%',
+          scrub: 0.5,
+        },
+      });
+      if (line) tl.to(line, { scaleY: 1, ease: 'none', duration: 1 }, 0);
+      dots.forEach((dot, i) => {
+        const at = dots.length > 1 ? 0.06 + (i / dots.length) * 0.9 : 0.5;
+        tl.to(dot, { scale: 1, duration: 0.12, ease: 'power1.out' }, at);
+      });
+    });
+  }
+
+  /* ================= HEADER / PROGRESS ================= */
+  function initScrollUI() {
+    if (!dom.header) return;
+    if (!hasGSAP || prefersReduced) {
+      const update = () => {
+        dom.header.classList.toggle('is-scrolled', window.scrollY > 80);
+      };
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+      return;
+    }
+    const syncHeader = (self) => {
+      dom.header.classList.toggle('is-scrolled', self.scroll() > 80);
+    };
     ScrollTrigger.create({
-      trigger: col,
-      start: 'top 78%',
-      end: 'bottom 55%',
-      scrub: true,
-      onUpdate(self) {
-        gsap.set(line, { scaleY: self.progress });
-        dots.forEach((dot, i) => {
-          const threshold = (i + 0.5) / dots.length;
-          dot.classList.toggle('is-filled', self.progress >= threshold);
-        });
-      },
+      start: 0,
+      end: 'max',
+      onUpdate: syncHeader,
+      onRefresh: syncHeader,
     });
-  });
+    if (dom.progress) {
+      gsap.to(dom.progress, {
+        scaleX: 1,
+        ease: 'none',
+        scrollTrigger: { start: 0, end: 'max', scrub: 0.2 },
+      });
+    }
+  }
 
-  ScrollTrigger.refresh();
-}
+  /* ================= MOBILE MENU ================= */
+  function menuFocusables() {
+    const links = dom.menu ? $$('a', dom.menu) : [];
+    return [dom.menuBtn, ...links].filter((el) => el && el.offsetParent !== null);
+  }
 
-/* Run after DOM + hero prep are in place. */
-window.addEventListener('load', () => {
-  initContentAnimations();
-  ScrollTrigger.refresh();
-});
+  function onMenuKey(e) {
+    if (!menuOpen) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeMenu();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const focusables = menuFocusables();
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function openMenu() {
+    if (!dom.menu || !dom.menuBtn || menuOpen) return;
+    menuOpen = true;
+    lastFocused = document.activeElement;
+    dom.menu.hidden = false;
+    dom.menuBtn.setAttribute('aria-expanded', 'true');
+    dom.menuBtn.setAttribute('aria-label', 'Close menu');
+    document.body.classList.add('menu-open');
+    $$('main, .site-footer').forEach((el) => { el.inert = true; });
+    if (lenis) lenis.stop();
+    document.addEventListener('keydown', onMenuKey);
+    const focusables = menuFocusables();
+    if (focusables.length) focusables[0].focus();
+  }
+
+  function closeMenu(opts = {}) {
+    if (!dom.menu || !dom.menuBtn || !menuOpen) return;
+    menuOpen = false;
+    dom.menu.hidden = true;
+    dom.menuBtn.setAttribute('aria-expanded', 'false');
+    dom.menuBtn.setAttribute('aria-label', 'Open menu');
+    document.body.classList.remove('menu-open');
+    $$('main, .site-footer').forEach((el) => { el.inert = false; });
+    if (lenis) lenis.start();
+    document.removeEventListener('keydown', onMenuKey);
+    if (opts.restoreFocus !== false) {
+      const restore = lastFocused && document.contains(lastFocused) ? lastFocused : dom.menuBtn;
+      restore.focus();
+    }
+  }
+
+  function setupMenu() {
+    if (!dom.menu || !dom.menuBtn) return;
+    dom.menuBtn.addEventListener('click', () => {
+      if (menuOpen) closeMenu();
+      else openMenu();
+    });
+  }
+
+  /* ================= ANCHORS ================= */
+  function bindAnchors() {
+    $$('[data-scroll-to], [data-scroll-to-top]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.hasAttribute('data-scroll-to-top')
+          ? '#hero'
+          : link.getAttribute('data-scroll-to');
+        if (menuOpen) closeMenu({ restoreFocus: false });
+        scrollToTarget(target);
+      });
+    });
+  }
+
+  /* ================= RESIZE / FONTS ================= */
+  function onResize() {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      setupCanvas();
+      if (prefersReduced) {
+        drawFrame(CONFIG.midFrame);
+      } else if (heroUpdate && hasGSAP) {
+        ScrollTrigger.refresh();
+      } else if (lastDrawn >= 0) {
+        drawFrame(lastDrawn);
+      }
+      if (menuOpen && window.innerWidth > 900) closeMenu();
+    }, 200);
+  }
+
+  /* ================= INIT ================= */
+  function init() {
+    initLenis();
+    setupMenu();
+    bindAnchors();
+    initScrollUI();
+    initFrames();
+    if (hasGSAP) {
+      initReveals();
+      initCounts();
+      initTimelines();
+      if (!prefersReduced) {
+        initHeroIntro();
+        initHeroScrub();
+      }
+    }
+    window.addEventListener('resize', onResize, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (hasGSAP) ScrollTrigger.refresh();
+        if (prefersReduced) drawFrame(CONFIG.midFrame);
+      });
+    }
+    window.addEventListener('load', () => {
+      if (hasGSAP) ScrollTrigger.refresh();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
