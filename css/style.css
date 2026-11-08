@@ -163,6 +163,7 @@ img, canvas { display: block; max-width: 100%; }
 }
 .site-header__inner {
   height: 100%;
+  max-width: 1400px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1662,7 +1663,7 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
 /* ---------------- Responsive ---------------- */
-@media (max-width: 980px) {
+@media (max-width: 1320px) {
   .site-header__nav { display: none; }
   .site-header__actions { display: flex; }
   .menu-btn { display: inline-flex; }
