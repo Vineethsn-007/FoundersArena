@@ -212,6 +212,21 @@ img, canvas { display: block; max-width: 100%; }
   transition: opacity .2s ease;
 }
 .site-header__nav a:hover { opacity: 1; }
+.site-header__nav a.nav-cta {
+  background: var(--accent);
+  color: #0b0d10 !important;
+  font-weight: 600;
+  padding: 6px 16px;
+  min-height: 34px;
+  border-radius: 999px;
+  opacity: 1;
+  letter-spacing: .02em;
+  transition: transform .2s var(--ease), background-color .2s ease;
+}
+.site-header__nav a.nav-cta:hover {
+  background: #ff7f57;
+  transform: translateY(-1px);
+}
 
 .menu-btn {
   display: none;
@@ -266,6 +281,11 @@ img, canvas { display: block; max-width: 100%; }
   line-height: 1.1;
   color: var(--ink);
   border-bottom: 1px solid var(--line);
+}
+.mobile-menu a.mobile-nav-cta {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  margin-top: 8px;
 }
 
 /* ---------------- Hero ---------------- */
@@ -386,17 +406,38 @@ img, canvas { display: block; max-width: 100%; }
   color: var(--ink);
   background: rgba(11, 13, 16, .45);
 }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  pointer-events: auto;
+}
 .hero-cta-link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  margin-top: 24px;
   font-size: 13px;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--ink);
   border-bottom: 1px solid rgba(244, 241, 234, .5);
   pointer-events: auto;
+  transition: border-color .2s ease, color .2s ease;
+}
+.hero-cta-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.hero-register-btn {
+  pointer-events: auto;
+  min-height: 44px;
+  padding: 10px 22px;
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 [data-split] .w {
@@ -844,11 +885,490 @@ img, canvas { display: block; max-width: 100%; }
   font-weight: 500;
   letter-spacing: .02em;
   cursor: pointer;
-  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease, color .2s ease;
 }
 .btn:hover { border-color: var(--accent); transform: translateY(-2px); }
-.btn--primary { background: var(--accent); border-color: var(--accent); color: #0b0d10; }
-.btn--primary:hover { border-color: var(--accent); }
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b0d10 !important;
+  font-weight: 600;
+}
+.btn--primary:hover {
+  background: #ff7f57;
+  border-color: #ff7f57;
+}
+.btn--outline-light {
+  border-color: rgba(255, 255, 255, .25);
+  color: var(--ink);
+}
+.btn--outline-light:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+.btn--accent {
+  background: rgba(255, 106, 61, .15);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.btn--accent:hover {
+  background: var(--accent);
+  color: #0b0d10 !important;
+}
+
+/* Dedicated PPT Download Button */
+.btn--download {
+  background: #d04423;
+  border-color: #d04423;
+  color: #ffffff !important;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(208, 68, 35, .32);
+  min-height: 48px;
+  padding: 12px 24px;
+  transition: background-color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.btn--download:hover {
+  background: #e25330;
+  border-color: #e25330;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(208, 68, 35, .5);
+}
+.btn--download svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform .2s ease;
+}
+.btn--download:hover svg {
+  transform: translateY(2px);
+}
+.btn--download-outline {
+  border-color: rgba(208, 68, 35, .5);
+  color: #ff8a65;
+  font-weight: 500;
+}
+.btn--download-outline:hover {
+  border-color: #d04423;
+  background: rgba(208, 68, 35, .15);
+  color: #ff8a65;
+}
+
+.section--dark .btn:not(.btn--primary):not(.btn--accent) {
+  border-color: rgba(255, 255, 255, .24);
+  color: var(--ink);
+}
+.section--dark .btn:not(.btn--primary):not(.btn--accent):hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.badge--accent {
+  background: rgba(255, 106, 61, .15);
+  color: var(--accent);
+  border: 1px solid rgba(255, 106, 61, .35);
+}
+.badge--outline {
+  border: 1px solid var(--card-line);
+  color: var(--label);
+}
+.badge--pptx {
+  background: rgba(208, 68, 35, .18);
+  color: #ff8a65;
+  border: 1px solid rgba(208, 68, 35, .45);
+}
+
+/* ---------------- Selection Round ---------------- */
+.domains-section-title {
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--label);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.domains-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line-c);
+}
+.domains-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.domain-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 3px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.domain-card__code {
+  font-family: var(--font-head);
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.domain-card__title {
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.2;
+}
+.domain-card__text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
+.criteria-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.criterion-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.criterion-card__no {
+  font-family: var(--font-head);
+  font-size: 13px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.criterion-card__title {
+  font-size: clamp(18px, 1.8vw, 20px);
+  line-height: 1.25;
+}
+.criterion-card__text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+.criteria-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--label);
+  margin-bottom: 48px;
+}
+
+/* Dedicated PPT Download Card */
+.ppt-download-card {
+  background: linear-gradient(135deg, rgba(208, 68, 35, .15) 0%, rgba(18, 20, 25, 0.98) 100%);
+  border: 1px solid rgba(208, 68, 35, .42);
+  border-radius: var(--radius);
+  padding: clamp(24px, 3.5vw, 36px);
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ppt-download-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: #d04423;
+}
+.ppt-download-card__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ppt-download-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.ppt-download-card__title {
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.2;
+}
+.ppt-download-card__desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-soft);
+  max-width: 72ch;
+}
+.ppt-download-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 13px;
+  color: var(--label);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line-c);
+}
+.ppt-download-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ppt-download-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* PPT Template Banner Box */
+.template-box {
+  background: linear-gradient(135deg, rgba(255, 106, 61, .08) 0%, rgba(18, 20, 25, 0.98) 100%);
+  border: 1px solid rgba(255, 106, 61, .35);
+  border-radius: var(--radius);
+  padding: clamp(28px, 4vw, 44px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: center;
+  position: relative;
+}
+.template-box__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+}
+.template-box__title {
+  font-size: clamp(26px, 3.2vw, 36px);
+  line-height: 1.15;
+}
+.template-box__text {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+.template-box__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-top: 4px;
+}
+.template-box__features li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+.template-box__features li::before {
+  content: "✓";
+  color: var(--accent);
+  font-weight: 700;
+}
+.template-box__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* QR Plate */
+.qr-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .35);
+  text-align: center;
+  flex-shrink: 0;
+  width: fit-content;
+  border: 2px solid rgba(255, 255, 255, .8);
+}
+.qr-code-img {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+}
+.qr-scan-label {
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #0b0d10;
+}
+.qr-hint {
+  font-size: 11px;
+  color: #606770;
+  margin-top: 2px;
+}
+
+/* ---------------- Deliverables ---------------- */
+.deliverables-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+.deliverable-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.deliverable-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.deliverable-card__title {
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.2;
+}
+.tip-callout {
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: rgba(255, 106, 61, .08);
+  border-left: 3px solid var(--accent);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+.checklist-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+.checklist-num {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 18px;
+}
+.reel-points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.reel-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-soft);
+}
+.reel-points li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  margin-top: .6em;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------------- Registration & Contact ---------------- */
+.register-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.register-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+.register-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.register-card__title {
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.2;
+}
+.register-card__text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+.register-qr-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-block: 8px;
+}
+.register-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line-c);
+}
+.contact-meta__item {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+.contact-meta__item strong {
+  color: var(--charcoal);
+  font-weight: 600;
+  min-width: 68px;
+}
+.section--dark .contact-meta__item strong {
+  color: var(--ink);
+}
 
 .venue-block {
   margin-top: 32px;
@@ -994,6 +1514,10 @@ html.lenis, html.lenis body { height: auto; }
   .judging-grid { grid-template-columns: 1fr; gap: 32px; }
   .judging-copy,
   .judging-list { grid-column: 1 / -1; }
+  .template-box { grid-template-columns: 1fr; }
+  .deliverables-grid { grid-template-columns: 1fr; }
+  .register-contact-grid { grid-template-columns: 1fr; }
+  .criteria-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 768px) {
@@ -1001,6 +1525,7 @@ html.lenis, html.lenis body { height: auto; }
   .hero-title { margin-inline: auto; }
   .hero-scroll { justify-content: center; }
   .hero-chips { justify-content: center; }
+  .hero-actions { justify-content: center; }
   .hero-cta-link { margin-inline: auto; }
   .hero__group--mid p { margin-inline: auto; }
   .stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1023,11 +1548,23 @@ html.lenis, html.lenis body { height: auto; }
   .judge-row__desc { grid-column: 2; }
   .contact-card__actions { flex-direction: column; }
   .contact-card__actions .btn { width: 100%; }
+  .domains-grid { grid-template-columns: 1fr; }
+  .criteria-grid { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .register-qr-row { flex-direction: column; align-items: flex-start; }
+  .template-box__actions .btn,
+  .register-card__actions .btn,
+  .ppt-download-card__actions .btn { width: 100%; }
+  .ppt-download-card__actions { flex-direction: column; width: 100%; }
+  .ppt-download-card__top { flex-direction: column; align-items: flex-start; }
+  .ppt-download-card__meta { flex-direction: column; gap: 6px; }
 }
 
 @media (max-width: 380px) {
   .stat { min-height: 132px; padding: 24px; }
   .footer__bottom { gap: 16px; }
+  .ppt-download-card { padding: 20px 16px; }
+  .btn--download { padding: 12px 14px; font-size: 13px; }
 }
 
 /* ---------------- Reduced motion ---------------- */

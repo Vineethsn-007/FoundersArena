@@ -4,17 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Founder's Arena | IEEE SMC × ICSB</title>
-  <meta name="description" content="THE FOUNDER'S ARENA — a two-day startup-building hackathon and Shark Tank-style pitching competition by IEEE SMC × ICSB. Build Bold. Pitch Big. Become a Founder." />
+  <meta name="description" content="THE FOUNDER'S ARENA — a two-day startup-building hackathon and Shark Tank-style pitching competition on November 17th & 18th, 2026 by IEEE SMC × ICSB at PACE, Mangaluru. Build Bold. Pitch Big. Become a Founder." />
   <meta name="theme-color" content="#0b0d10" />
   <meta property="og:title" content="The Founder's Arena | IEEE SMC × ICSB" />
-  <meta property="og:description" content="Where Ideas Fight for Investment. Two days. Twenty teams. One arena." />
+  <meta property="og:description" content="Where Ideas Fight for Investment. November 17 & 18, 2026. Twenty teams. One arena." />
   <meta property="og:type" content="website" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Crect%20x='6'%20y='6'%20width='12'%20height='12'%20fill='%23ff6a3d'%20transform='rotate(45%2012%2012)'/%3E%3C/svg%3E" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <!-- First hero frame -->
   <link rel="preload" as="image" href="frames/frame_0032.jpg" />
@@ -58,12 +58,15 @@
 
       <nav class="site-header__nav" aria-label="Primary">
         <a href="#about" data-scroll-to="#about">About</a>
+        <a href="#selection" data-scroll-to="#selection">Selection Round</a>
         <a href="#format" data-scroll-to="#format">Format</a>
         <a href="#roles" data-scroll-to="#roles">Roles</a>
         <a href="#schedule" data-scroll-to="#schedule">Schedule</a>
+        <a href="#deliverables" data-scroll-to="#deliverables">Deliverables</a>
         <a href="#judging" data-scroll-to="#judging">Judging</a>
         <a href="#awards" data-scroll-to="#awards">Awards</a>
         <a href="#contact" data-scroll-to="#contact">Contact</a>
+        <a href="#register" class="nav-cta" data-scroll-to="#register">Register</a>
       </nav>
 
       <button id="menuBtn" class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
@@ -77,12 +80,16 @@
   <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
     <nav aria-label="Mobile">
       <a href="#about" data-scroll-to="#about">About</a>
+      <a href="#selection" data-scroll-to="#selection">Selection Round</a>
+      <a href="assets/Founders_Arena_Selection_Round_Template.pptx" download="Founders_Arena_Selection_Round_Template.pptx" style="color: #ff8a65;">Download PPT Template &darr;</a>
       <a href="#format" data-scroll-to="#format">Format</a>
       <a href="#roles" data-scroll-to="#roles">Roles</a>
       <a href="#schedule" data-scroll-to="#schedule">Schedule</a>
+      <a href="#deliverables" data-scroll-to="#deliverables">Deliverables</a>
       <a href="#judging" data-scroll-to="#judging">Judging</a>
       <a href="#awards" data-scroll-to="#awards">Awards</a>
       <a href="#contact" data-scroll-to="#contact">Contact</a>
+      <a href="#register" data-scroll-to="#register" class="mobile-nav-cta">Register Now &rarr;</a>
     </nav>
   </div>
 
@@ -118,11 +125,23 @@
           <div class="hero__group hero__group--chips" id="heroGroup3">
             <div class="container">
               <ul class="hero-chips">
-                <li>2 &middot; 3 NOV 2026</li>
+                <li>17 &middot; 18 NOV 2026</li>
                 <li>SEMINAR HALL, PACE</li>
                 <li>9 AM &ndash; 4 PM</li>
+                <li>TOP 20 TEAMS &middot; PPT SELECTION</li>
               </ul>
-              <a href="#about" class="hero-cta-link" data-scroll-to="#about">Explore the event &darr;</a>
+              <div class="hero-actions">
+                <a href="#selection" class="hero-cta-link" data-scroll-to="#selection">Selection Round &darr;</a>
+                <a href="assets/Founders_Arena_Selection_Round_Template.pptx" download="Founders_Arena_Selection_Round_Template.pptx" class="btn btn--download" style="min-height: 44px; padding: 10px 18px; font-size: 13px;" aria-label="Download PPT Template (.pptx)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 16px; height: 16px;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>Download PPT</span>
+                </a>
+                <a href="#register" class="btn btn--primary hero-register-btn" data-scroll-to="#register">Register Now &rarr;</a>
+              </div>
             </div>
           </div>
         </div>
@@ -140,31 +159,154 @@
         <div class="section-grid about-grid">
           <div class="about-copy">
             <p data-reveal>THE FOUNDER'S ARENA is a high-energy, two-day startup-building hackathon and Shark Tank-style pitching competition. Teams think like entrepreneurs, build like innovators, and pitch like founders.</p>
-            <p data-reveal>Twenty teams. One real-world problem each. A working product, a startup brand, a chart presentation, a promo reel &mdash; and a panel of judges acting as investors.</p>
+            <p data-reveal>Participation is based on a PPT selection round. Only the top 20 teams will be selected to enter the arena. One real-world problem each. A working product, a startup brand, a chart presentation, a promo reel &mdash; and a panel of judges acting as investors.</p>
           </div>
 
           <aside class="info-card card" aria-label="Event details" data-reveal>
-            <div class="info-row"><span class="info-label">Date</span><span class="info-value">November 2nd &amp; 3rd, 2026</span></div>
-            <div class="info-row"><span class="info-label">Venue</span><span class="info-value">Seminar Hall, PACE</span></div>
-            <div class="info-row"><span class="info-label">Timing</span><span class="info-value">9:00 AM to 4:00 PM</span></div>
+            <div class="info-row"><span class="info-label">Date</span><span class="info-value">November 17th &amp; 18th, 2026</span></div>
+            <div class="info-row"><span class="info-label">Venue</span><span class="info-value">Seminar Hall, P.A. College of Engineering, Mangaluru</span></div>
+            <div class="info-row"><span class="info-label">Timing</span><span class="info-value">9:00 AM to 4:00 PM (Both days)</span></div>
+            <div class="info-row"><span class="info-label">Selection</span><span class="info-value">Top 20 Teams via PPT Round</span></div>
             <div class="info-row"><span class="info-label">Format</span><span class="info-value">Hackathon + Shark Tank pitch</span></div>
           </aside>
         </div>
       </div>
     </section>
 
-    <!-- 02 — Format -->
-    <section id="format" class="section section--dark" aria-labelledby="format-title">
+    <!-- 02 — Selection Round -->
+    <section id="selection" class="section section--dark" aria-labelledby="selection-title">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" data-reveal>02 &mdash; The Format</p>
+          <p class="eyebrow" data-reveal>02 &mdash; Selection Round</p>
+          <h2 id="selection-title" class="section-title" data-split>Selection based on PPT Round. Only top 20 teams get in.</h2>
+          <p class="section-sub" data-reveal>Participation in The Founder's Arena is based on a PPT selection round. Prepare your pitch using the standard official template and upload your finished deck through the registration form. Submissions are evaluated strictly across the four criteria below.</p>
+        </div>
+
+        <!-- Domains -->
+        <div class="domains-section-title" data-reveal>Domains</div>
+        <div class="domains-grid" data-reveal-stagger>
+          <article class="card domain-card">
+            <span class="badge badge--accent">Domain 1</span>
+            <h3 class="domain-card__title">Rural Development &amp; Social Innovation</h3>
+            <p class="domain-card__text">Technology and scalable solutions targeting agriculture, rural livelihoods, grassroots education, healthcare access, clean energy, and social empowerment.</p>
+          </article>
+          <article class="card domain-card">
+            <span class="badge badge--accent">Domain 2</span>
+            <h3 class="domain-card__title">FinTech &amp; Financial Inclusion</h3>
+            <p class="domain-card__text">Innovative financial technology, micro-economy solutions, inclusive banking, accessible digital payments, bookkeeping, and tools for underserved communities.</p>
+          </article>
+        </div>
+
+        <!-- Evaluation Criteria -->
+        <div class="domains-section-title" data-reveal>Evaluation Criteria</div>
+        <div class="criteria-grid" data-reveal-stagger>
+          <article class="card criterion-card">
+            <p class="criterion-card__no">Criterion 1</p>
+            <h3 class="criterion-card__title">Problem Clarity &amp; Theme Fit</h3>
+            <p class="criterion-card__text">Is the problem clear and real, and does it fit the chosen domain?</p>
+          </article>
+          <article class="card criterion-card">
+            <p class="criterion-card__no">Criterion 2</p>
+            <h3 class="criterion-card__title">Innovation &amp; Solution Quality</h3>
+            <p class="criterion-card__text">Is the idea original and the solution well thought out?</p>
+          </article>
+          <article class="card criterion-card">
+            <p class="criterion-card__no">Criterion 3</p>
+            <h3 class="criterion-card__title">Impact &amp; Target Users</h3>
+            <p class="criterion-card__text">Who benefits, and how much difference will it make?</p>
+          </article>
+          <article class="card criterion-card">
+            <p class="criterion-card__no">Criterion 4</p>
+            <h3 class="criterion-card__title">Technical Feasibility</h3>
+            <p class="criterion-card__text">Can it realistically be built with the proposed tech?</p>
+          </article>
+        </div>
+        <p class="criteria-note" data-reveal>Final scoring weightage will be announced by the organisers.</p>
+
+        <!-- Dedicated PPT Download Card -->
+        <article class="card ppt-download-card" data-reveal>
+          <div class="ppt-download-card__top">
+            <div class="ppt-download-card__badges">
+              <span class="badge badge--pptx">Microsoft PowerPoint (.pptx)</span>
+              <span class="badge badge--outline">Standard Official Template</span>
+            </div>
+            <span style="font-size: 13px; color: var(--label);">File size: 44 KB &middot; 9 Guided Slides</span>
+          </div>
+
+          <h3 class="ppt-download-card__title">Official Selection Round PPT Template</h3>
+          <p class="ppt-download-card__desc">Download the official presentation deck for the PPT selection round. The template includes 9 guided slides covering Problem Statement, Target Users &amp; Impact, Proposed Solution, Key Features, Tech Stack, Business &amp; Sustainability, and Team Lead Contact.</p>
+
+          <div class="ppt-download-card__meta">
+            <span class="ppt-download-card__meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+              No sign-in required
+            </span>
+            <span class="ppt-download-card__meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+              Direct offline download (.pptx)
+            </span>
+            <span class="ppt-download-card__meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+              Google Slides &amp; PowerPoint compatible
+            </span>
+          </div>
+
+          <div class="ppt-download-card__actions">
+            <a class="btn btn--download" href="assets/Founders_Arena_Selection_Round_Template.pptx" download="Founders_Arena_Selection_Round_Template.pptx" aria-label="Download PowerPoint Template (.pptx)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download PPT Template (.pptx)</span>
+            </a>
+            <a class="btn btn--download-outline" href="https://docs.google.com/presentation/d/1rpwEkumI3yE7qR-lXjFXr9p_FahzhR7d/edit?usp=sharing&ouid=115607313639692877914&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">
+              <span>Open in Google Slides &rarr;</span>
+            </a>
+            <a class="btn btn--accent" href="#register" data-scroll-to="#register">
+              <span>Upload &amp; Register &darr;</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- PPT Template & Drive Resources Banner -->
+        <div class="template-box" data-reveal>
+          <div class="template-box__content">
+            <span class="badge badge--accent">Official Event Resources</span>
+            <h3 class="template-box__title">Event Brochure &amp; Selection Drive Kit</h3>
+            <p class="template-box__text">Access the complete Founder's Arena kit on Google Drive containing the official event brochure, selection criteria, and presentation template. Share the link directly with your team.</p>
+            <ul class="template-box__features">
+              <li>Complete Event Brochure with full guidelines</li>
+              <li>Selection Round Template &amp; guidelines</li>
+              <li>Google Drive, Google Slides &amp; PowerPoint formats</li>
+            </ul>
+            <div class="template-box__actions">
+              <a class="btn btn--primary" href="https://drive.google.com/drive/folders/1E2Usblsy9gU_uRab94-gnWsnUIoEv-7x?usp=sharing" target="_blank" rel="noopener noreferrer">Open Drive Folder (Brochure &amp; PPT) &rarr;</a>
+              <a class="btn btn--outline-light" href="assets/Arena_Brochure.pdf" target="_blank" rel="noopener noreferrer">View PDF Brochure &rarr;</a>
+            </div>
+          </div>
+
+          <div class="qr-plate">
+            <img src="assets/qr-drive-resources.png" width="170" height="170" alt="QR code to open official event brochure and PPT template on Google Drive" class="qr-code-img" loading="lazy" />
+            <span class="qr-scan-label">Scan for Brochure &amp; PPT</span>
+            <span class="qr-hint">Official Google Drive Folder</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — Format -->
+    <section id="format" class="section section--light" aria-labelledby="format-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>03 &mdash; The Format</p>
           <h2 id="format-title" class="section-title" data-split>Two days. Twenty teams. One arena.</h2>
         </div>
 
         <div class="stats-row" data-reveal-stagger>
           <div class="stat">
             <p class="stat__num"><span data-count="20">20</span></p>
-            <p class="stat__label">Teams</p>
+            <p class="stat__label">Teams Selected</p>
           </div>
           <div class="stat">
             <p class="stat__num"><span data-count="5">5</span></p>
@@ -172,11 +314,11 @@
           </div>
           <div class="stat">
             <p class="stat__num"><span data-count="2">2</span></p>
-            <p class="stat__label">Days</p>
+            <p class="stat__label">Days of Action</p>
           </div>
           <div class="stat">
-            <p class="stat__num"><span data-count="20">20</span></p>
-            <p class="stat__label">Domain sheets</p>
+            <p class="stat__num"><span data-count="2">2</span></p>
+            <p class="stat__label">Selection Domains</p>
           </div>
         </div>
 
@@ -184,32 +326,32 @@
           <article class="card step-card">
             <p class="step-card__no">1</p>
             <h3 class="step-card__title">Team Formation</h3>
-            <p class="step-card__text">20 teams of 5, each member with a defined role.</p>
+            <p class="step-card__text">20 teams of 5, each member with a defined executive role (CEO, CTO, CPO, CFO, CMO).</p>
           </article>
           <article class="card step-card">
             <p class="step-card__no">2</p>
             <h3 class="step-card__title">Pick a Domain</h3>
-            <p class="step-card__text">Each team selects one of 20 domain sheets.</p>
+            <p class="step-card__text">Choose between Rural Development &amp; Social Innovation or FinTech &amp; Financial Inclusion.</p>
           </article>
           <article class="card step-card">
             <p class="step-card__no">3</p>
             <h3 class="step-card__title">Find the Problem</h3>
-            <p class="step-card__text">A unique, relevant, real-world problem worth solving.</p>
+            <p class="step-card__text">A unique, relevant, real-world problem worth solving with tangible market impact.</p>
           </article>
           <article class="card step-card">
             <p class="step-card__no">4</p>
             <h3 class="step-card__title">Build the Solution</h3>
-            <p class="step-card__text">Web, mobile, hardware/IoT, AI or any product that demonstrates the core idea.</p>
+            <p class="step-card__text">Web apps, mobile apps, hardware/IoT, AI solutions or software platforms demonstrating core value.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 03 — Roles -->
+    <!-- 04 — Roles -->
     <section id="roles" class="section section--light" aria-labelledby="roles-title">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" data-reveal>03 &mdash; Your Team</p>
+          <p class="eyebrow" data-reveal>04 &mdash; Your Team</p>
           <h2 id="roles-title" class="section-title" data-split>Five founders. Five roles.</h2>
           <p class="section-sub" data-reveal>Every member must understand the whole product &mdash; judges may question anyone.</p>
         </div>
@@ -219,62 +361,62 @@
             <p class="role-card__code">CEO</p>
             <h3 class="role-card__title">Chief Executive Officer</h3>
             <ul class="role-card__list">
-              <li>Introduces the startup and its vision</li>
-              <li>Explains the business concept</li>
-              <li>Presents mission and long-term goals</li>
+              <li>Introduces the startup, vision, mission and long-term goals</li>
+              <li>Explains the overarching business concept</li>
+              <li>Aligns the founding team and communicates executive strategy</li>
             </ul>
           </article>
           <article class="card role-card">
             <p class="role-card__code">CTO</p>
             <h3 class="role-card__title">Chief Technology Officer</h3>
             <ul class="role-card__list">
-              <li>Explains architecture and tech stack</li>
-              <li>Demonstrates the product</li>
-              <li>Shows feasibility of the implementation</li>
+              <li>Explains the tech stack, architecture and feasibility</li>
+              <li>Demos the working product live to investor judges</li>
+              <li>Proves technical execution and scalability</li>
             </ul>
           </article>
           <article class="card role-card">
             <p class="role-card__code">CPO</p>
             <h3 class="role-card__title">Chief Product Officer</h3>
             <ul class="role-card__list">
-              <li>Presents the problem and solution</li>
-              <li>Walks through features and user experience</li>
-              <li>Highlights the unique value</li>
+              <li>Presents the problem, solution, features and unique value</li>
+              <li>Walks through user personas and experience design</li>
+              <li>Demonstrates how product solves pain points</li>
             </ul>
           </article>
           <article class="card role-card">
             <p class="role-card__code">CFO</p>
             <h3 class="role-card__title">Chief Financial Officer</h3>
             <ul class="role-card__list">
-              <li>Explains business model and revenue</li>
-              <li>Presents assumptions and growth potential</li>
-              <li>States the investment request and its use</li>
+              <li>Explains the revenue model, unit economics and growth</li>
+              <li>Presents financial assumptions and capital efficiency</li>
+              <li>States the investment ask and how funds will be used</li>
             </ul>
           </article>
           <article class="card role-card">
             <p class="role-card__code">CMO</p>
             <h3 class="role-card__title">Chief Marketing Officer</h3>
             <ul class="role-card__list">
-              <li>Presents branding and marketing strategy</li>
-              <li>Defines target audience and acquisition</li>
-              <li>Produces the promotional reel</li>
+              <li>Owns branding, visual identity and marketing strategy</li>
+              <li>Defines target audience and customer acquisition</li>
+              <li>Produces and directs the 30–60 second promo reel</li>
             </ul>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 04 — Schedule -->
+    <!-- 05 — Schedule -->
     <section id="schedule" class="section section--dark" aria-labelledby="schedule-title">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" data-reveal>04 &mdash; The Two Days</p>
+          <p class="eyebrow" data-reveal>05 &mdash; The Two Days</p>
           <h2 id="schedule-title" class="section-title" data-split>Build on Day 1. Pitch on Day 2.</h2>
         </div>
 
         <div class="schedule-grid">
           <div class="schedule-col" data-timeline>
-            <h3 class="schedule-col__heading">Day 1 &mdash; Build Day &middot; November 2</h3>
+            <h3 class="schedule-col__heading">Day 1 &mdash; Build Day &middot; November 17</h3>
             <p class="schedule-col__sub">Transform an idea into a functional product and a startup brand.</p>
             <div class="timeline">
               <span class="timeline__line" aria-hidden="true"></span>
@@ -282,82 +424,82 @@
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Develop the product</h4>
-                  <p>Implement core features and prepare a working demo.</p>
+                  <h4>Build a working product</h4>
+                  <p>Implement core features and test functionality. Product must be complete by 4:30 PM.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Create the brand</h4>
-                  <p>Finalize a unique startup name, logo and visual identity.</p>
+                  <h4>Finalise startup brand</h4>
+                  <p>Finalise a unique startup name, logo and cohesive visual identity.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Prepare the chart</h4>
-                  <p>A physical chart paper presentation covering name, domain, problem, solution, features, audience, USP, business model and visuals.</p>
+                  <h4>Make physical chart presentation</h4>
+                  <p>Prepare a physical chart paper presentation covering name, domain, problem, solution, features, audience, USP, business model and visuals.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Produce the reel</h4>
-                  <p>A 30&ndash;60 second promotional reel that tells your story.</p>
+                  <h4>Produce promotional reel</h4>
+                  <p>A 30–60 second promotional reel produced by the CMO that hooks investors and users.</p>
                 </div>
               </li>
             </ol>
             </div>
-            <p class="schedule-note">Submit: working product &middot; startup name and branding &middot; promotional reel &middot; physical chart. At least two members stay at the workstation at all times.</p>
+            <p class="schedule-note">Submit by 4:30 PM: working product &middot; startup name and branding &middot; promotional reel &middot; physical chart. At least 2 teammates must stay at the workstation at all times.</p>
           </div>
 
           <div class="schedule-col" data-timeline>
-            <h3 class="schedule-col__heading">Day 2 &mdash; The Investor Pitch &middot; November 3</h3>
-            <p class="schedule-col__sub">Convince the panel your startup deserves investment.</p>
+            <h3 class="schedule-col__heading">Day 2 &mdash; The Investor Pitch &middot; November 18</h3>
+            <p class="schedule-col__sub">Convince the investor panel your startup deserves backing.</p>
             <div class="timeline">
               <span class="timeline__line" aria-hidden="true"></span>
               <ol class="timeline__list">
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Startup introduction</h4>
-                  <p>Name, vision, team and roles.</p>
-                </div>
-              </li>
-              <li class="timeline__step">
-                <span class="timeline__dot" aria-hidden="true"><i></i></span>
-                <div class="timeline__body">
-                  <h4>Problem and solution</h4>
-                  <p>Who it affects, why it matters, how you solve it.</p>
+                  <h4>Introduce your startup</h4>
+                  <p>Startup name, vision, mission, problem and solution.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
                   <h4>Live product demo</h4>
-                  <p>Show the working product and its key features.</p>
+                  <p>Give a live demo of your working product and core features to the judges.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Chart presentation</h4>
-                  <p>Use your physical chart to reinforce the story.</p>
+                  <h4>Present physical chart paper</h4>
+                  <p>Walk through your chart paper to visually reinforce your value proposition.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Business and investment</h4>
-                  <p>Revenue model, competitive edge, the ask, and future growth.</p>
+                  <h4>Explain business model &amp; revenue</h4>
+                  <p>Present revenue streams, target market, growth metrics, and customer acquisition.</p>
                 </div>
               </li>
               <li class="timeline__step">
                 <span class="timeline__dot" aria-hidden="true"><i></i></span>
                 <div class="timeline__body">
-                  <h4>Judges' Q&amp;A</h4>
-                  <p>Defend your product, tech, finances and market.</p>
+                  <h4>State investment ask</h4>
+                  <p>State your investment request and exactly how funds will be deployed.</p>
+                </div>
+              </li>
+              <li class="timeline__step">
+                <span class="timeline__dot" aria-hidden="true"><i></i></span>
+                <div class="timeline__body">
+                  <h4>Answer judges' questions as a team</h4>
+                  <p>Defend tech, product, business and financial choices as a united founding team.</p>
                 </div>
               </li>
             </ol>
@@ -365,15 +507,69 @@
           </div>
         </div>
 
-        <p class="schedule-hours" data-reveal>Event hours both days: 9:00 AM &ndash; 4:00 PM.</p>
+        <p class="schedule-hours" data-reveal>Event hours both days: 9:00 AM &ndash; 4:00 PM &middot; Seminar Hall, P.A. College of Engineering, Mangaluru</p>
       </div>
     </section>
 
-    <!-- 05 — Judging -->
-    <section id="judging" class="section section--light" aria-labelledby="judging-title">
+    <!-- 06 — Deliverables -->
+    <section id="deliverables" class="section section--light" aria-labelledby="deliverables-title">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" data-reveal>05 &mdash; Judging</p>
+          <p class="eyebrow" data-reveal>06 &mdash; Day 1 Deliverables</p>
+          <h2 id="deliverables-title" class="section-title" data-split>Chart paper presentation &amp; promotional reel.</h2>
+          <p class="section-sub" data-reveal>Every team prepares and submits these two creative assets alongside their working product on Day 1. Ensure high visual clarity and compelling storytelling.</p>
+        </div>
+
+        <div class="deliverables-grid" data-reveal-stagger>
+          <!-- Chart Paper Requirements -->
+          <article class="card deliverable-card">
+            <div class="deliverable-card__head">
+              <span class="badge badge--accent">Physical Presentation</span>
+              <h3 class="deliverable-card__title">What Your Chart Paper Must Show</h3>
+            </div>
+            <div class="tip-callout">
+              <strong>Organizers' Tip:</strong> Make it so clear that someone who has never seen your project gets it in 30 seconds.
+            </div>
+            <div class="checklist-grid">
+              <div class="checklist-item"><span class="checklist-num">01</span><span>Startup name and logo</span></div>
+              <div class="checklist-item"><span class="checklist-num">02</span><span>Selected domain</span></div>
+              <div class="checklist-item"><span class="checklist-num">03</span><span>Problem statement</span></div>
+              <div class="checklist-item"><span class="checklist-num">04</span><span>Proposed solution</span></div>
+              <div class="checklist-item"><span class="checklist-num">05</span><span>Product overview</span></div>
+              <div class="checklist-item"><span class="checklist-num">06</span><span>Key features</span></div>
+              <div class="checklist-item"><span class="checklist-num">07</span><span>Target audience</span></div>
+              <div class="checklist-item"><span class="checklist-num">08</span><span>Unique selling point (USP)</span></div>
+              <div class="checklist-item"><span class="checklist-num">09</span><span>Business model</span></div>
+              <div class="checklist-item"><span class="checklist-num">10</span><span>Visuals: screenshots, diagrams, photos</span></div>
+            </div>
+          </article>
+
+          <!-- Promotional Reel Requirements -->
+          <article class="card deliverable-card">
+            <div class="deliverable-card__head">
+              <span class="badge badge--accent">Video Pitch</span>
+              <h3 class="deliverable-card__title">Promotional Reel (30–60 Seconds)</h3>
+            </div>
+            <div class="tip-callout">
+              <strong>Organizers' Tip:</strong> Open with an engaging hook in the first 5 seconds to grab customer and investor attention.
+            </div>
+            <ul class="reel-points">
+              <li>Introduce your startup and its flagship product</li>
+              <li>Show the problem clearly and present your innovative solution</li>
+              <li>Highlight the key benefits and value proposition for end users</li>
+              <li>Use creative storytelling and branding to attract customers and investors</li>
+              <li>Produced and directed by the CMO; submitted on Day 1 alongside your working product, branding and physical chart paper</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 — Judging -->
+    <section id="judging" class="section section--dark" aria-labelledby="judging-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>07 &mdash; Judging</p>
           <h2 id="judging-title" class="section-title" data-split>How you'll be evaluated.</h2>
         </div>
 
@@ -386,95 +582,161 @@
             <div class="judge-row">
               <span class="judge-row__no">1</span>
               <h3 class="judge-row__name">Problem Identification &amp; Innovation</h3>
-              <p class="judge-row__desc">relevance, originality, impact</p>
+              <p class="judge-row__desc">relevance, originality, real-world impact</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">2</span>
               <h3 class="judge-row__name">Product Functionality &amp; Design</h3>
-              <p class="judge-row__desc">working core features, usability, execution</p>
+              <p class="judge-row__desc">working core features, usability, execution quality</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">3</span>
               <h3 class="judge-row__name">Physical Chart &amp; Communication</h3>
-              <p class="judge-row__desc">clarity, visual appeal, business value</p>
+              <p class="judge-row__desc">clarity, visual appeal, 30-second understanding</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">4</span>
               <h3 class="judge-row__name">Business Potential &amp; Scalability</h3>
-              <p class="judge-row__desc">model, market understanding, growth</p>
+              <p class="judge-row__desc">revenue model, market understanding, growth trajectory</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">5</span>
               <h3 class="judge-row__name">Pitch Quality &amp; Teamwork</h3>
-              <p class="judge-row__desc">structure, confidence, coordination</p>
+              <p class="judge-row__desc">structured pitch, confidence, executive coordination</p>
             </div>
             <div class="judge-row">
               <span class="judge-row__no">6</span>
               <h3 class="judge-row__name">Responses to Judges</h3>
-              <p class="judge-row__desc">product knowledge, reasoning, handling challenges</p>
+              <p class="judge-row__desc">product knowledge, reasoning, defending tech and business</p>
             </div>
           </div>
         </div>
 
-        <p class="judging-footnote" data-reveal>Final scoring weightage will be announced by the organizing committee.</p>
+        <p class="judging-footnote" data-reveal>Final scoring weightage will be announced by the organisers.</p>
       </div>
     </section>
 
-    <!-- 06 — Awards -->
+    <!-- 08 — Awards -->
     <section id="awards" class="section section--dark" aria-labelledby="awards-title">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" data-reveal>06 &mdash; Recognition</p>
-          <h2 id="awards-title" class="section-title" data-split>Only two places. Make them count.</h2>
+          <p class="eyebrow" data-reveal>08 &mdash; Recognition</p>
+          <h2 id="awards-title" class="section-title" data-split>Only two prizes. Make them count.</h2>
         </div>
 
         <div class="awards-grid" data-reveal-stagger>
           <article class="card award-card">
             <p class="award-card__place">1st</p>
             <h3 class="award-card__title">Overall First Place</h3>
-            <p class="award-card__text">The strongest combination of innovation, product functionality, business potential and pitching ability.</p>
+            <p class="award-card__text">Strongest combination of innovation, working product functionality, business viability, brand identity and pitching ability.</p>
           </article>
           <article class="card award-card">
             <p class="award-card__place">2nd</p>
             <h3 class="award-card__title">Overall Second Place</h3>
-            <p class="award-card__text">The second-highest overall performance across all evaluation criteria.</p>
+            <p class="award-card__text">Second-highest overall performance across all evaluation criteria and pitch rounds.</p>
           </article>
+        </div>
+
+        <div class="tip-callout" style="margin-top: 24px;" data-reveal>
+          <strong>Official Rule:</strong> Only two prizes. Investment money allocated by judges is dummy and only for simulation, not actual funding.
         </div>
 
         <h3 class="gains-heading">What you'll gain</h3>
         <ul class="gains-list" data-reveal-stagger>
-          <li>Build functional products under time pressure</li>
-          <li>Create a startup brand and marketing material</li>
-          <li>Pitch and defend ideas before judges</li>
-          <li>Understand business models and scalability</li>
+          <li>Build functional products under real-world time pressure</li>
+          <li>Create a complete startup brand, chart presentation and marketing reel</li>
+          <li>Pitch and defend ideas before investor judges</li>
+          <li>Understand business models, unit economics and scalability</li>
           <li>Collaborate across tech, product, finance and marketing</li>
-          <li>Develop entrepreneurial thinking</li>
+          <li>Develop true founder mentality and entrepreneurial thinking</li>
         </ul>
       </div>
     </section>
 
-    <!-- 07 — Contact -->
+    <!-- 09 — Join the Arena -->
     <section id="contact" class="section section--light" aria-labelledby="contact-title">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" data-reveal>07 &mdash; Join the Arena</p>
+          <p class="eyebrow" data-reveal>09 &mdash; Join the Arena</p>
           <h2 id="contact-title" class="section-title" data-split>Ready to become a founder?</h2>
-          <p class="section-sub" data-reveal>For registration and queries, reach out to the organizer.</p>
+          <p class="section-sub" data-reveal>Selection is based on the PPT round. Only the top 20 teams get in. Scan the QR code or click to register your team, download the official template, and submit your proposal.</p>
         </div>
 
-        <div class="contact-card card" data-reveal>
-          <div class="contact-card__who">
-            <p class="contact-card__label">Organizer</p>
-            <p class="contact-card__name">Muhammad Haashid</p>
-            <p class="contact-card__phone">6360850145</p>
-          </div>
-          <div class="contact-card__actions">
-            <a class="btn btn--primary" href="tel:+916360850145" aria-label="Call Muhammad Haashid on +91 63608 50145">Call now</a>
-            <a class="btn" href="https://wa.me/916360850145" target="_blank" rel="noopener" aria-label="Message Muhammad Haashid on WhatsApp (opens in a new tab)">WhatsApp</a>
-          </div>
+        <div class="register-contact-grid" data-reveal-stagger>
+          <!-- Registration & PPT Submission Card -->
+          <article id="register" class="card register-card">
+            <div class="register-card__content">
+              <span class="badge badge--accent">Selection Round Open</span>
+              <h3 class="register-card__title">Scan to Register &amp; Submit PPT</h3>
+              <p class="register-card__text">Submit your 5-member team roster and upload your selection round pitch deck. Only the top 20 shortlisted teams will enter the arena on November 17 &amp; 18.</p>
+
+              <div class="register-qr-row">
+                <div class="qr-plate">
+                  <img src="assets/qr-register.jpeg" width="160" height="160" alt="QR Code to register for The Founder's Arena" class="qr-code-img" loading="lazy" />
+                  <span class="qr-scan-label">Scan to Register</span>
+                  <span class="qr-hint">Opens Google Form</span>
+                </div>
+                <div>
+                  <p style="font-size: 14px; color: var(--text-soft); line-height: 1.5; margin-bottom: 8px;">
+                    Use your phone camera or QR scanner to open the registration form directly on mobile.
+                  </p>
+                  <p style="font-size: 13px; color: var(--label); line-height: 1.4;">
+                    Top 20 teams selected &middot; 5 members per team
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="register-card__actions">
+              <a class="btn btn--primary" href="https://forms.gle/e7bdw2gYiM74r9yu9" target="_blank" rel="noopener noreferrer">Register via Google Form &rarr;</a>
+              <a class="btn btn--download" href="assets/Founders_Arena_Selection_Round_Template.pptx" download="Founders_Arena_Selection_Round_Template.pptx" aria-label="Download PPT Template (.pptx)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 16px; height: 16px;">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download PPT</span>
+              </a>
+              <a class="btn" href="https://drive.google.com/drive/folders/1E2Usblsy9gU_uRab94-gnWsnUIoEv-7x?usp=sharing" target="_blank" rel="noopener noreferrer">Brochure &amp; PPT Folder</a>
+            </div>
+          </article>
+
+          <!-- Organizer Queries Card -->
+          <article class="card register-card">
+            <div class="register-card__content">
+              <span class="badge badge--outline">Organizer Contact</span>
+              <h3 class="register-card__title">For Queries &amp; Support</h3>
+              <p class="register-card__text">Have questions regarding registration, selection criteria, team guidelines, or event logistics? Contact the event organizer directly.</p>
+
+              <div style="margin-top: 8px;">
+                <p class="contact-card__name">Muhammad Haashid</p>
+                <p class="contact-card__phone"><a href="tel:+916360850145" style="color: inherit; text-decoration: none;">+91 6360850145</a></p>
+              </div>
+
+              <div class="contact-meta">
+                <div class="contact-meta__item">
+                  <strong>Dates:</strong>
+                  <span>November 17th &amp; 18th, 2026</span>
+                </div>
+                <div class="contact-meta__item">
+                  <strong>Timing:</strong>
+                  <span>9:00 AM – 4:00 PM (Both days)</span>
+                </div>
+                <div class="contact-meta__item">
+                  <strong>Venue:</strong>
+                  <span>Seminar Hall, P.A. College of Engineering, Mangaluru</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-card__actions" style="margin-top: auto;">
+              <a class="btn btn--primary" href="tel:+916360850145" aria-label="Call Muhammad Haashid on +91 63608 50145">Call now</a>
+              <a class="btn" href="https://wa.me/916360850145" target="_blank" rel="noopener" aria-label="Message Muhammad Haashid on WhatsApp (opens in a new tab)">WhatsApp</a>
+            </div>
+          </article>
         </div>
 
-        <p class="venue-block" data-reveal>Seminar Hall, PACE &middot; November 2nd &amp; 3rd &middot; 9 AM &ndash; 4 PM</p>
+        <p class="venue-block" data-reveal>Seminar Hall, P.A. College of Engineering, Mangaluru &middot; November 17th &amp; 18th, 2026 &middot; 9 AM &ndash; 4 PM</p>
 
         <div class="footer-presented" data-reveal>
           <p class="footer-presented__label">Presented by</p>
