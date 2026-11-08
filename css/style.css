@@ -163,17 +163,18 @@ img, canvas { display: block; max-width: 100%; }
 }
 .site-header__inner {
   height: 100%;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: clamp(10px, 1.8vw, 24px);
+  min-width: 0;
 }
 .site-header__brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: clamp(6px, 1vw, 12px);
   min-width: 0;
-  justify-self: start;
+  flex-shrink: 0;
 }
 .brand-link {
   display: inline-flex;
@@ -216,56 +217,88 @@ img, canvas { display: block; max-width: 100%; }
 .logo-plate:not(.logo-plate--sm) .college-text {
   font-size: 15px;
 }
-@media (max-width: 1200px) {
-  .site-header__brand .college-text--header {
-    display: none;
-  }
+.college-text__short {
+  display: none;
 }
-@media (max-width: 900px) {
-  .site-header__brand .college-text--header {
-    display: inline;
-    font-size: 12px;
-  }
+.college-text__full {
+  display: inline;
 }
-@media (max-width: 580px) {
-  .site-header__brand .college-text--header {
-    display: none;
-  }
-  .footer__logos .college-text {
-    display: none;
-  }
+
+/* Dynamic College Name in Header */
+@media (max-width: 1360px) and (min-width: 1121px) {
+  .site-header__brand .college-text__full { display: none; }
+  .site-header__brand .college-text__short { display: inline; }
+}
+
+@media (max-width: 860px) {
+  .site-header__brand .college-text__full { display: none; }
+  .site-header__brand .college-text__short { display: inline; }
+}
+
+@media (max-width: 480px) {
+  .site-header__brand .college-text--header { display: none; }
+  .footer__logos .college-text { display: none; }
 }
 
 .site-header__nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  justify-self: center;
-  gap: clamp(14px, 2vw, 28px);
+  justify-content: flex-end;
+  gap: clamp(4px, 0.9vw, 16px);
+  flex-shrink: 1;
+  min-width: 0;
 }
 .site-header__nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  font-size: 13px;
+  min-height: 38px;
+  padding: 4px clamp(4px, 0.5vw, 8px);
+  font-size: clamp(11.5px, 0.82vw, 13px);
   font-weight: 500;
   color: var(--ink);
   opacity: .86;
-  transition: opacity .2s ease;
+  white-space: nowrap;
+  letter-spacing: .01em;
+  transition: opacity .2s ease, color .2s ease;
 }
 .site-header__nav a:hover { opacity: 1; }
 .site-header__nav a.nav-cta {
   background: var(--accent);
   color: #0b0d10 !important;
   font-weight: 600;
-  padding: 6px 16px;
-  min-height: 34px;
+  padding: 6px clamp(10px, 1.1vw, 16px);
+  min-height: 32px;
   border-radius: 999px;
   opacity: 1;
   letter-spacing: .02em;
   transition: transform .2s var(--ease), background-color .2s ease;
 }
 .site-header__nav a.nav-cta:hover {
+  background: #ff7f57;
+  transform: translateY(-1px);
+}
+
+.site-header__actions {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.header-register-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent);
+  color: #0b0d10 !important;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 6px 16px;
+  min-height: 34px;
+  border-radius: 999px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  transition: transform .2s var(--ease), background-color .2s ease;
+}
+.header-register-btn:hover {
   background: #ff7f57;
   transform: translateY(-1px);
 }
@@ -1592,13 +1625,17 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
 /* ---------------- Responsive ---------------- */
+@media (max-width: 1120px) {
+  .site-header__nav { display: none; }
+  .site-header__actions { display: flex; }
+  .menu-btn { display: inline-flex; }
+}
+
 @media (max-width: 1024px) {
   .steps-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
-  .site-header__nav { display: none; }
-  .menu-btn { display: inline-flex; }
   .section-grid { grid-template-columns: 1fr; gap: 24px; }
   .about-grid .about-copy,
   .about-grid .info-card { grid-column: 1 / -1; }
@@ -1636,6 +1673,11 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 @media (max-width: 640px) {
+  .header-register-btn { display: none; }
+  .logo-plate--sm { height: 38px; padding: 6px 8px; }
+  .logo-plate--sm img { height: 20px; }
+  .logo-plate--sm.logo-plate--college { padding-inline: 8px; gap: 6px; }
+  .site-header__brand { gap: 6px; }
   .judge-row { grid-template-columns: 36px minmax(0, 1fr); }
   .judge-row__desc { grid-column: 2; }
   .contact-card__actions { flex-direction: column; }
@@ -1653,6 +1695,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 @media (max-width: 380px) {
+  .site-header__brand .college-text--header { display: none; }
   .stat { min-height: 132px; padding: 24px; }
   .footer__bottom { gap: 16px; }
   .ppt-download-card { padding: 20px 16px; }
